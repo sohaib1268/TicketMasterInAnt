@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package ticketmasterinant;
+package pkg1920x1080project;
 
 /**
  *
@@ -41,6 +41,7 @@ public class ViewProfile extends javax.swing.JFrame {
         displaycontact = new javax.swing.JLabel();
         displaypassword = new javax.swing.JLabel();
         displaycity = new javax.swing.JLabel();
+        editprofilebtn = new javax.swing.JButton();
         backgroundlabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -139,6 +140,15 @@ public class ViewProfile extends javax.swing.JFrame {
         getContentPane().add(displaycity);
         displaycity.setBounds(270, 560, 180, 16);
 
+        editprofilebtn.setText("EDIT PROFILE");
+        editprofilebtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editprofilebtnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(editprofilebtn);
+        editprofilebtn.setBounds(210, 240, 190, 23);
+
         backgroundlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MY PROFILE1366X768.png"))); // NOI18N
         getContentPane().add(backgroundlabel);
         backgroundlabel.setBounds(0, 0, 1370, 770);
@@ -156,10 +166,18 @@ public class ViewProfile extends javax.swing.JFrame {
 
     private void eventsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventsbtnActionPerformed
         // TODO add your handling code here:
+        eventspage = new EventsPage();
+        eventspage.setVisible(true);
+        this.setVisible(false);
+        
     }//GEN-LAST:event_eventsbtnActionPerformed
 
     private void busbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busbtnActionPerformed
         // TODO add your handling code here:
+        buspage = new BusServices();
+        buspage.setVisible(true);
+        this.setVisible(false);
+        
     }//GEN-LAST:event_busbtnActionPerformed
 
     private void cartbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartbtnActionPerformed
@@ -169,6 +187,14 @@ public class ViewProfile extends javax.swing.JFrame {
     private void reservedbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservedbtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_reservedbtnActionPerformed
+
+    private void editprofilebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editprofilebtnActionPerformed
+        // TODO add your handling code here:
+        editprofile = new editprofilepage();
+        editprofile.setVisible(true);
+        this.setVisible(false);
+       
+    }//GEN-LAST:event_editprofilebtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -205,11 +231,11 @@ public class ViewProfile extends javax.swing.JFrame {
         });
     }
     
-    private BonusPoints bonuspointspage;
-    private LogInPage loginpage;
-    private SignUpPage signuppage;
     private HomePage homepage;
-
+    private BusServices buspage;
+    private EventsPage eventspage;
+    private editprofilepage editprofile;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backgroundlabel;
     private javax.swing.JButton busbtn;
@@ -221,6 +247,7 @@ public class ViewProfile extends javax.swing.JFrame {
     private javax.swing.JLabel displayemail;
     private javax.swing.JLabel displayname;
     private javax.swing.JLabel displaypassword;
+    private javax.swing.JButton editprofilebtn;
     private javax.swing.JLabel emaillabel;
     private javax.swing.JButton eventsbtn;
     private javax.swing.JButton homebtn;

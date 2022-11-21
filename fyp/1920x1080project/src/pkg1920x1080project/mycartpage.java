@@ -8,12 +8,12 @@ package pkg1920x1080project;
  *
  * @author Sohaib Ali
  */
-public class HomePage extends javax.swing.JFrame {
+public class mycartpage extends javax.swing.JFrame {
 
     /**
-     * Creates new form HomePage
+     * Creates new form mycartpage
      */
-    public HomePage() {
+    public mycartpage() {
         initComponents();
     }
 
@@ -26,14 +26,15 @@ public class HomePage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        homebtn = new javax.swing.JButton();
         eventsbtn = new javax.swing.JButton();
         busbtn = new javax.swing.JButton();
-        homebtn = new javax.swing.JButton();
         cartbtn = new javax.swing.JButton();
         reservedbtn = new javax.swing.JButton();
-        viewprofilebtn = new javax.swing.JButton();
-        usernamelabel = new javax.swing.JLabel();
-        coinslabel = new javax.swing.JLabel();
+        currentitemslabel = new javax.swing.JLabel();
+        itemamountlabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        cartitemstable = new javax.swing.JTable();
         backgroundlabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -42,28 +43,6 @@ public class HomePage extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1366, 768));
         getContentPane().setLayout(null);
 
-        eventsbtn.setBorder(null);
-        eventsbtn.setBorderPainted(false);
-        eventsbtn.setContentAreaFilled(false);
-        eventsbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eventsbtnActionPerformed(evt);
-            }
-        });
-        getContentPane().add(eventsbtn);
-        eventsbtn.setBounds(530, 510, 90, 60);
-
-        busbtn.setBorder(null);
-        busbtn.setContentAreaFilled(false);
-        busbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                busbtnActionPerformed(evt);
-            }
-        });
-        getContentPane().add(busbtn);
-        busbtn.setBounds(740, 510, 100, 60);
-
-        homebtn.setBorder(null);
         homebtn.setContentAreaFilled(false);
         homebtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,9 +50,26 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(homebtn);
-        homebtn.setBounds(360, 630, 50, 40);
+        homebtn.setBounds(10, 123, 60, 70);
 
-        cartbtn.setBorder(null);
+        eventsbtn.setContentAreaFilled(false);
+        eventsbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eventsbtnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(eventsbtn);
+        eventsbtn.setBounds(10, 233, 60, 60);
+
+        busbtn.setContentAreaFilled(false);
+        busbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                busbtnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(busbtn);
+        busbtn.setBounds(10, 343, 60, 60);
+
         cartbtn.setContentAreaFilled(false);
         cartbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,9 +77,8 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(cartbtn);
-        cartbtn.setBounds(560, 620, 50, 40);
+        cartbtn.setBounds(10, 453, 60, 60);
 
-        reservedbtn.setBorder(null);
         reservedbtn.setContentAreaFilled(false);
         reservedbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,52 +86,50 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(reservedbtn);
-        reservedbtn.setBounds(740, 630, 50, 40);
+        reservedbtn.setBounds(10, 563, 60, 60);
 
-        viewprofilebtn.setBorder(null);
-        viewprofilebtn.setContentAreaFilled(false);
-        viewprofilebtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewprofilebtnActionPerformed(evt);
+        currentitemslabel.setText("CURRENT ITEMS :");
+        getContentPane().add(currentitemslabel);
+        currentitemslabel.setBounds(110, 270, 100, 40);
+
+        itemamountlabel.setText("ITEM AMOUNT LABEL");
+        getContentPane().add(itemamountlabel);
+        itemamountlabel.setBounds(250, 280, 130, 20);
+
+        cartitemstable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        });
-        getContentPane().add(viewprofilebtn);
-        viewprofilebtn.setBounds(930, 630, 50, 40);
+        ));
+        jScrollPane1.setViewportView(cartitemstable);
 
-        usernamelabel.setText("jLabel1");
-        getContentPane().add(usernamelabel);
-        usernamelabel.setBounds(240, 90, 50, 40);
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(130, 340, 950, 350);
 
-        coinslabel.setText("jLabel1");
-        getContentPane().add(coinslabel);
-        coinslabel.setBounds(1130, 80, 70, 50);
-
-        backgroundlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/homepage1366x768.png"))); // NOI18N
+        backgroundlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MYCART1366X768.png"))); // NOI18N
         getContentPane().add(backgroundlabel);
         backgroundlabel.setBounds(0, 0, 1370, 770);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void busbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busbtnActionPerformed
+    private void homebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homebtnActionPerformed
         // TODO add your handling code here:
-        busservicespage = new BusServices();
-        busservicespage.setVisible(true);
-        this.setVisible(false);
-        
-    }//GEN-LAST:event_busbtnActionPerformed
+    }//GEN-LAST:event_homebtnActionPerformed
 
     private void eventsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventsbtnActionPerformed
         // TODO add your handling code here:
-        eventspage = new EventsPage();
-        eventspage.setVisible(true);
-        this.setVisible(false);
     }//GEN-LAST:event_eventsbtnActionPerformed
 
-    private void homebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homebtnActionPerformed
+    private void busbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busbtnActionPerformed
         // TODO add your handling code here:
-        //do nothing as already on homepage
-    }//GEN-LAST:event_homebtnActionPerformed
+    }//GEN-LAST:event_busbtnActionPerformed
 
     private void cartbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartbtnActionPerformed
         // TODO add your handling code here:
@@ -145,13 +138,6 @@ public class HomePage extends javax.swing.JFrame {
     private void reservedbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservedbtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_reservedbtnActionPerformed
-
-    private void viewprofilebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewprofilebtnActionPerformed
-        // TODO add your handling code here:
-        viewprofilepage = new ViewProfile();
-        viewprofilepage.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_viewprofilebtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,38 +156,34 @@ public class HomePage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mycartpage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mycartpage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mycartpage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mycartpage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HomePage().setVisible(true);
+                new mycartpage().setVisible(true);
             }
         });
     }
-    
-    
-    private ViewProfile viewprofilepage;
-    private BusServices busservicespage;
-    private EventsPage eventspage;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backgroundlabel;
     private javax.swing.JButton busbtn;
     private javax.swing.JButton cartbtn;
-    private javax.swing.JLabel coinslabel;
+    private javax.swing.JTable cartitemstable;
+    private javax.swing.JLabel currentitemslabel;
     private javax.swing.JButton eventsbtn;
     private javax.swing.JButton homebtn;
+    private javax.swing.JLabel itemamountlabel;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton reservedbtn;
-    private javax.swing.JLabel usernamelabel;
-    private javax.swing.JButton viewprofilebtn;
     // End of variables declaration//GEN-END:variables
 }
