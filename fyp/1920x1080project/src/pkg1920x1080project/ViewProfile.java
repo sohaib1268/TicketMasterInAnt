@@ -64,6 +64,7 @@ public class ViewProfile extends javax.swing.JFrame {
         getContentPane().add(homebtn);
         homebtn.setBounds(20, 120, 50, 60);
 
+        eventsbtn.setBorder(null);
         eventsbtn.setContentAreaFilled(false);
         eventsbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,43 +107,43 @@ public class ViewProfile extends javax.swing.JFrame {
 
         namelabel.setText("NAME :");
         getContentPane().add(namelabel);
-        namelabel.setBounds(160, 360, 60, 16);
+        namelabel.setBounds(160, 360, 60, 15);
 
         emaillabel.setText("EMAIL : ");
         getContentPane().add(emaillabel);
-        emaillabel.setBounds(160, 410, 60, 16);
+        emaillabel.setBounds(160, 410, 60, 15);
 
         contactlabel.setText("CONTACT :");
         getContentPane().add(contactlabel);
-        contactlabel.setBounds(160, 460, 70, 16);
+        contactlabel.setBounds(160, 460, 70, 15);
 
         passwordlabel.setText("PASSWORD :");
         getContentPane().add(passwordlabel);
-        passwordlabel.setBounds(160, 510, 90, 16);
+        passwordlabel.setBounds(160, 510, 90, 15);
 
         citylabel.setText("CITY :");
         getContentPane().add(citylabel);
-        citylabel.setBounds(160, 560, 70, 16);
+        citylabel.setBounds(160, 560, 70, 15);
 
         displayname.setText("jLabel1");
         getContentPane().add(displayname);
-        displayname.setBounds(270, 360, 200, 16);
+        displayname.setBounds(270, 360, 200, 15);
 
         displayemail.setText("jLabel2");
         getContentPane().add(displayemail);
-        displayemail.setBounds(270, 410, 200, 16);
+        displayemail.setBounds(270, 410, 200, 15);
 
         displaycontact.setText("jLabel3");
         getContentPane().add(displaycontact);
-        displaycontact.setBounds(270, 460, 220, 16);
+        displaycontact.setBounds(270, 460, 220, 15);
 
         displaypassword.setText("jLabel4");
         getContentPane().add(displaypassword);
-        displaypassword.setBounds(270, 510, 200, 16);
+        displaypassword.setBounds(270, 510, 200, 15);
 
         displaycity.setText("jLabel5");
         getContentPane().add(displaycity);
-        displaycity.setBounds(270, 560, 180, 16);
+        displaycity.setBounds(270, 560, 180, 15);
 
         editprofilebtn.setText("EDIT PROFILE");
         editprofilebtn.addActionListener(new java.awt.event.ActionListener() {
@@ -151,7 +152,7 @@ public class ViewProfile extends javax.swing.JFrame {
             }
         });
         getContentPane().add(editprofilebtn);
-        editprofilebtn.setBounds(210, 240, 190, 23);
+        editprofilebtn.setBounds(210, 240, 190, 25);
 
         backgroundlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MY PROFILE1366X768.png"))); // NOI18N
         getContentPane().add(backgroundlabel);

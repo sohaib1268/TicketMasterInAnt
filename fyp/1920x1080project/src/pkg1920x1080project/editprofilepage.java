@@ -63,7 +63,7 @@ public class editprofilepage extends javax.swing.JFrame {
 
         jTextField1.setText("jTextField1");
         getContentPane().add(jTextField1);
-        jTextField1.setBounds(200, 260, 240, 22);
+        jTextField1.setBounds(200, 260, 240, 19);
 
         jTextField2.setText("jTextField2");
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
@@ -72,7 +72,7 @@ public class editprofilepage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jTextField2);
-        jTextField2.setBounds(200, 340, 240, 22);
+        jTextField2.setBounds(200, 340, 240, 19);
 
         homebtn.setContentAreaFilled(false);
         homebtn.addActionListener(new java.awt.event.ActionListener() {

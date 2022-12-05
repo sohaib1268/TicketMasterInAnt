@@ -60,7 +60,7 @@ public class SignUpPage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(namefield);
-        namefield.setBounds(210, 380, 290, 22);
+        namefield.setBounds(210, 380, 290, 19);
 
         emaillabel.setText("EMAIL :");
         getContentPane().add(emaillabel);
@@ -68,7 +68,7 @@ public class SignUpPage extends javax.swing.JFrame {
 
         emailfield.setText("jTextField1");
         getContentPane().add(emailfield);
-        emailfield.setBounds(210, 440, 290, 22);
+        emailfield.setBounds(210, 440, 290, 19);
 
         contactlabel.setText("CONTACT :");
         getContentPane().add(contactlabel);
@@ -76,7 +76,7 @@ public class SignUpPage extends javax.swing.JFrame {
 
         contactfield.setText("jTextField1");
         getContentPane().add(contactfield);
-        contactfield.setBounds(210, 490, 290, 22);
+        contactfield.setBounds(210, 490, 290, 19);
 
         passwordlabel.setText("PASSWORD :");
         getContentPane().add(passwordlabel);
@@ -84,7 +84,7 @@ public class SignUpPage extends javax.swing.JFrame {
 
         passwordfield.setText("jTextField1");
         getContentPane().add(passwordfield);
-        passwordfield.setBounds(210, 550, 290, 22);
+        passwordfield.setBounds(210, 550, 290, 19);
 
         citylabel.setText("CITY :");
         getContentPane().add(citylabel);
@@ -92,7 +92,7 @@ public class SignUpPage extends javax.swing.JFrame {
 
         cityfield.setText("jTextField1");
         getContentPane().add(cityfield);
-        cityfield.setBounds(210, 610, 290, 22);
+        cityfield.setBounds(210, 610, 290, 19);
 
         signupbtn.setText("SIGN UP NOW !");
         signupbtn.addActionListener(new java.awt.event.ActionListener() {

@@ -129,7 +129,7 @@ public class LogInPage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(enterusername);
-        enterusername.setBounds(110, 310, 300, 22);
+        enterusername.setBounds(110, 310, 300, 19);
 
         passwordlabel.setText("PASSWORD");
         getContentPane().add(passwordlabel);
@@ -137,7 +137,7 @@ public class LogInPage extends javax.swing.JFrame {
 
         enterpassword.setText("jTextField1");
         getContentPane().add(enterpassword);
-        enterpassword.setBounds(110, 430, 300, 22);
+        enterpassword.setBounds(110, 430, 300, 19);
 
         loginbtn.setText("LOG IN");
         loginbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -146,11 +146,11 @@ public class LogInPage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(loginbtn);
-        loginbtn.setBounds(210, 490, 80, 23);
+        loginbtn.setBounds(210, 490, 80, 25);
 
         jLabel1.setText("----------------NEW USER ?----------------");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(150, 540, 230, 16);
+        jLabel1.setBounds(150, 540, 230, 15);
 
         signupbtn.setText("SIGN UP NOW");
         signupbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -159,7 +159,7 @@ public class LogInPage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(signupbtn);
-        signupbtn.setBounds(180, 590, 150, 23);
+        signupbtn.setBounds(180, 590, 150, 25);
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loginpage1366x768.png"))); // NOI18N
         getContentPane().add(background);
