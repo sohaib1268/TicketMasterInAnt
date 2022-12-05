@@ -4,6 +4,8 @@
  */
 package pkg1920x1080project;
 
+import java.sql.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,12 +14,15 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static pkg1920x1080project.EventsPage.SelectedEvent;
+import static pkg1920x1080project.LogInPage.LoggedInUsername;
+
 
 /**
  *
  * @author Sohaib Ali
  */
 public class ViewEventDetails extends javax.swing.JFrame {
+
 
     /**
      * Creates new form ViewEventDetails
@@ -130,8 +135,86 @@ public class ViewEventDetails extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private String setEventID()
+    {
+             try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`Event`.`EventID` from `scd_db`.`Event` where `scd_db`.`Event`.`Name` = ?";  
+                PreparedStatement ps =con.prepareStatement(sql);
+                
+                String name = SelectedEvent;
+                ps.setString(1, name);
+
+                ResultSet rs = ps.executeQuery();
+                rs.next();
+                
+                String EventID = rs.getString("EventID");
+                
+                return EventID;
+                //con.close();
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return null;
+    }
+    
+    private String setCustomerID()
+    {
+        try {
+                Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`Customer`.`CustomerID` from `scd_db`.`Customer` where `scd_db`.`Customer`.`Name` = ?";  
+                PreparedStatement ps =con2.prepareStatement(sql);
+                
+                String name = LoggedInUsername;
+                ps.setString(1, name);
+
+                ResultSet rs1 = ps.executeQuery();
+                rs1.next();
+                
+                String CustomerID = rs1.getString("CustomerID");
+                System.out.println(CustomerID);
+                
+                return CustomerID;
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return null;
+        }
+    
     private void bookbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookbtnActionPerformed
         // TODO add your handling code here:
+        
+        int tickets = (int) nooftickets.getValue();
+        String EventID = setEventID();;
+        String CustomerID = setCustomerID();
+        
+        
+        System.out.println("Event ID : " + EventID);
+        System.out.println("CustomerID : " + CustomerID);
+        
+        
+        Connection con;
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");        
+            String sql = "INSERT INTO `scd_db`.`EventCart` VALUES(?, ?, ?);";
+            PreparedStatement ps =con.prepareStatement(sql);  
+            
+            ps.setString(1, CustomerID);
+            ps.setString(2, EventID);
+            ps.setInt(3, tickets );
+            
+            ps.executeUpdate();
+            
+            this.dispose();
+            mycartpage CP = new mycartpage();
+            CP.setVisible(true);
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_bookbtnActionPerformed
 
     private void returnbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnbtnActionPerformed

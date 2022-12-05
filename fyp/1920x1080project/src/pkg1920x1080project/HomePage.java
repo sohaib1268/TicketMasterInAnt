@@ -37,7 +37,11 @@ public class HomePage extends javax.swing.JFrame {
     
     public void setcurrentpoints() throws SQLException
     {
+        
+        System.out.println("In setcurrentpoints");
         String username = LoggedInUsername;  
+        
+        System.out.println(username);
         
         Connection con;
         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
@@ -47,9 +51,11 @@ public class HomePage extends javax.swing.JFrame {
         ps.setString(1, username);
             
         ResultSet rs = ps.executeQuery();
+        System.out.println("In setcurrentpoints 2");
         rs.next();
         
         String coins = rs.getString("CurrentPoints");
+        System.out.println(coins);
         coinslabel.setText(coins);
     }
 
@@ -184,11 +190,19 @@ public class HomePage extends javax.swing.JFrame {
 
     private void reservedbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservedbtnActionPerformed
         // TODO add your handling code here:
+        
+        this.dispose();
+        ReservationsPage RP = new ReservationsPage();
+        RP.setVisible(true);
     }//GEN-LAST:event_reservedbtnActionPerformed
 
     private void viewprofilebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewprofilebtnActionPerformed
-        // TODO add your handling code here:
-        viewprofilepage = new ViewProfile();
+        try {
+            // TODO add your handling code here:
+            viewprofilepage = new ViewProfile();
+        } catch (SQLException ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         viewprofilepage.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_viewprofilebtnActionPerformed

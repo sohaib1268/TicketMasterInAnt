@@ -15,6 +15,13 @@ public class mycartpage extends javax.swing.JFrame {
      */
     public mycartpage() {
         initComponents();
+        
+        populate();
+    }
+    
+    public void populate()
+    {
+        // Name Quanitity Date 
     }
 
     /**

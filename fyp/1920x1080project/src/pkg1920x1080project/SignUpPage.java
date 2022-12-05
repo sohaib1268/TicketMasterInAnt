@@ -38,8 +38,6 @@ public class SignUpPage extends javax.swing.JFrame {
         contactfield = new javax.swing.JTextField();
         passwordlabel = new javax.swing.JLabel();
         passwordfield = new javax.swing.JTextField();
-        citylabel = new javax.swing.JLabel();
-        cityfield = new javax.swing.JTextField();
         signupbtn = new javax.swing.JButton();
         backgroundlabel = new javax.swing.JLabel();
 
@@ -60,7 +58,7 @@ public class SignUpPage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(namefield);
-        namefield.setBounds(210, 380, 290, 19);
+        namefield.setBounds(210, 380, 290, 22);
 
         emaillabel.setText("EMAIL :");
         getContentPane().add(emaillabel);
@@ -68,7 +66,7 @@ public class SignUpPage extends javax.swing.JFrame {
 
         emailfield.setText("jTextField1");
         getContentPane().add(emailfield);
-        emailfield.setBounds(210, 440, 290, 19);
+        emailfield.setBounds(210, 440, 290, 22);
 
         contactlabel.setText("CONTACT :");
         getContentPane().add(contactlabel);
@@ -76,7 +74,7 @@ public class SignUpPage extends javax.swing.JFrame {
 
         contactfield.setText("jTextField1");
         getContentPane().add(contactfield);
-        contactfield.setBounds(210, 490, 290, 19);
+        contactfield.setBounds(210, 490, 290, 22);
 
         passwordlabel.setText("PASSWORD :");
         getContentPane().add(passwordlabel);
@@ -84,15 +82,7 @@ public class SignUpPage extends javax.swing.JFrame {
 
         passwordfield.setText("jTextField1");
         getContentPane().add(passwordfield);
-        passwordfield.setBounds(210, 550, 290, 19);
-
-        citylabel.setText("CITY :");
-        getContentPane().add(citylabel);
-        citylabel.setBounds(130, 600, 50, 40);
-
-        cityfield.setText("jTextField1");
-        getContentPane().add(cityfield);
-        cityfield.setBounds(210, 610, 290, 19);
+        passwordfield.setBounds(210, 550, 290, 22);
 
         signupbtn.setText("SIGN UP NOW !");
         signupbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -306,8 +296,6 @@ public class SignUpPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backgroundlabel;
-    private javax.swing.JTextField cityfield;
-    private javax.swing.JLabel citylabel;
     private javax.swing.JTextField contactfield;
     private javax.swing.JLabel contactlabel;
     private javax.swing.JTextField emailfield;

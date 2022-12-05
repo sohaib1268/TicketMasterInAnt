@@ -4,9 +4,13 @@
  */
 package pkg1920x1080project;
 
+
+import java.sql.*;
+
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static pkg1920x1080project.LogInPage.LoggedInUsername;
 
 /**
  *
@@ -17,8 +21,31 @@ public class ViewProfile extends javax.swing.JFrame {
     /**
      * Creates new form ViewProfile
      */
-    public ViewProfile() {
+    public ViewProfile() throws SQLException {
         initComponents();
+        
+        setProfileDetails();
+    }
+    
+    public void setProfileDetails() throws SQLException
+    {
+        String username = LoggedInUsername;
+        
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`Customer` where `scd_db`.`Customer`.`Name` = ?";
+        PreparedStatement ps =con.prepareStatement(sql);  
+        
+        ps.setString(1, username);
+            
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        
+        displayname.setText(rs.getString("Name"));
+        displayemail.setText(rs.getString("Email"));
+        displaycontact.setText(rs.getString("Contact"));
+        displaypassword.setText(rs.getString("Password"));
+        
     }
 
     /**
@@ -39,12 +66,10 @@ public class ViewProfile extends javax.swing.JFrame {
         emaillabel = new javax.swing.JLabel();
         contactlabel = new javax.swing.JLabel();
         passwordlabel = new javax.swing.JLabel();
-        citylabel = new javax.swing.JLabel();
         displayname = new javax.swing.JLabel();
         displayemail = new javax.swing.JLabel();
         displaycontact = new javax.swing.JLabel();
         displaypassword = new javax.swing.JLabel();
-        displaycity = new javax.swing.JLabel();
         editprofilebtn = new javax.swing.JButton();
         backgroundlabel = new javax.swing.JLabel();
 
@@ -107,43 +132,35 @@ public class ViewProfile extends javax.swing.JFrame {
 
         namelabel.setText("NAME :");
         getContentPane().add(namelabel);
-        namelabel.setBounds(160, 360, 60, 15);
+        namelabel.setBounds(160, 360, 60, 16);
 
         emaillabel.setText("EMAIL : ");
         getContentPane().add(emaillabel);
-        emaillabel.setBounds(160, 410, 60, 15);
+        emaillabel.setBounds(160, 410, 60, 16);
 
         contactlabel.setText("CONTACT :");
         getContentPane().add(contactlabel);
-        contactlabel.setBounds(160, 460, 70, 15);
+        contactlabel.setBounds(160, 460, 70, 16);
 
         passwordlabel.setText("PASSWORD :");
         getContentPane().add(passwordlabel);
-        passwordlabel.setBounds(160, 510, 90, 15);
-
-        citylabel.setText("CITY :");
-        getContentPane().add(citylabel);
-        citylabel.setBounds(160, 560, 70, 15);
+        passwordlabel.setBounds(160, 510, 90, 16);
 
         displayname.setText("jLabel1");
         getContentPane().add(displayname);
-        displayname.setBounds(270, 360, 200, 15);
+        displayname.setBounds(270, 360, 200, 16);
 
         displayemail.setText("jLabel2");
         getContentPane().add(displayemail);
-        displayemail.setBounds(270, 410, 200, 15);
+        displayemail.setBounds(270, 410, 200, 16);
 
         displaycontact.setText("jLabel3");
         getContentPane().add(displaycontact);
-        displaycontact.setBounds(270, 460, 220, 15);
+        displaycontact.setBounds(270, 460, 220, 16);
 
         displaypassword.setText("jLabel4");
         getContentPane().add(displaypassword);
-        displaypassword.setBounds(270, 510, 200, 15);
-
-        displaycity.setText("jLabel5");
-        getContentPane().add(displaycity);
-        displaycity.setBounds(270, 560, 180, 15);
+        displaypassword.setBounds(270, 510, 200, 16);
 
         editprofilebtn.setText("EDIT PROFILE");
         editprofilebtn.addActionListener(new java.awt.event.ActionListener() {
@@ -152,7 +169,7 @@ public class ViewProfile extends javax.swing.JFrame {
             }
         });
         getContentPane().add(editprofilebtn);
-        editprofilebtn.setBounds(210, 240, 190, 25);
+        editprofilebtn.setBounds(210, 240, 190, 23);
 
         backgroundlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MY PROFILE1366X768.png"))); // NOI18N
         getContentPane().add(backgroundlabel);
@@ -239,7 +256,7 @@ public class ViewProfile extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewProfile().setVisible(true);
+            //    new ViewProfile().setVisible(true);
             }
         });
     }
@@ -253,9 +270,7 @@ public class ViewProfile extends javax.swing.JFrame {
     private javax.swing.JLabel backgroundlabel;
     private javax.swing.JButton busbtn;
     private javax.swing.JButton cartbtn;
-    private javax.swing.JLabel citylabel;
     private javax.swing.JLabel contactlabel;
-    private javax.swing.JLabel displaycity;
     private javax.swing.JLabel displaycontact;
     private javax.swing.JLabel displayemail;
     private javax.swing.JLabel displayname;
