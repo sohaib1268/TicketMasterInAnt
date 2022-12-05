@@ -4,6 +4,10 @@
  */
 package pkg1920x1080project;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 
 /**
@@ -127,15 +131,23 @@ public class BusServices extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void homebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homebtnActionPerformed
-        // TODO add your handling code here:
-        homepage = new HomePage();
+        try {
+            // TODO add your handling code here:
+            homepage = new HomePage();
+        } catch (SQLException ex) {
+            Logger.getLogger(BusServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
         homepage.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_homebtnActionPerformed
 
     private void eventsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventsbtnActionPerformed
-        // TODO add your handling code here:
-        eventspage = new EventsPage();
+        try {
+            // TODO add your handling code here:
+            eventspage = new EventsPage();
+        } catch (SQLException ex) {
+            Logger.getLogger(BusServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
         eventspage.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_eventsbtnActionPerformed

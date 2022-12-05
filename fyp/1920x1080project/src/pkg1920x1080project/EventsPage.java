@@ -4,6 +4,13 @@
  */
 package pkg1920x1080project;
 
+import java.sql.*;
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Sohaib Ali
@@ -13,8 +20,46 @@ public class EventsPage extends javax.swing.JFrame {
     /**
      * Creates new form EventsPage
      */
-    public EventsPage() {
+    
+    
+    public static String SelectedEvent;
+    
+    public EventsPage() throws SQLException {
         initComponents();
+        
+        
+        getBusServicesFromDB();
+    }
+    
+    public void getBusServicesFromDB() throws SQLException
+    {
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`Event`";
+        PreparedStatement ps =con.prepareStatement(sql); 
+        ResultSet rs = ps.executeQuery();
+        
+        DefaultTableModel tbModel = (DefaultTableModel)eventstable.getModel();
+        for (int i = eventstable.getRowCount() - 1; i >= 0; i--) {
+            tbModel.removeRow(i);
+        }
+        
+        while(rs.next())
+        {
+            String eventname = rs.getString("Name");
+            String location = rs.getString("Location");
+            String time = rs.getString("Date");
+            
+            String tbData[] = {eventname, location, time};
+            
+            
+            tbModel.addRow(tbData);
+
+        }
+        
+        
+        
+        
     }
 
     /**
@@ -28,7 +73,6 @@ public class EventsPage extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         eventstable = new javax.swing.JTable();
-        eventsearchbar = new javax.swing.JTextField();
         viewdetailsbtn = new javax.swing.JButton();
         homebtn = new javax.swing.JButton();
         eventsbtn = new javax.swing.JButton();
@@ -57,10 +101,6 @@ public class EventsPage extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(130, 320, 1070, 370);
-
-        eventsearchbar.setText("Search");
-        getContentPane().add(eventsearchbar);
-        eventsearchbar.setBounds(130, 220, 370, 22);
 
         viewdetailsbtn.setText("VIEW DETAILS");
         viewdetailsbtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -125,8 +165,12 @@ public class EventsPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void homebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homebtnActionPerformed
-        // TODO add your handling code here:
-        homepage = new HomePage();
+        try {
+            // TODO add your handling code here:
+            homepage = new HomePage();
+        } catch (SQLException ex) {
+            Logger.getLogger(EventsPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         homepage.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_homebtnActionPerformed
@@ -153,6 +197,24 @@ public class EventsPage extends javax.swing.JFrame {
 
     private void viewdetailsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewdetailsbtnActionPerformed
         // TODO add your handling code here:
+        
+        int row = eventstable.getSelectedRow();
+        
+        String name = eventstable.getModel().getValueAt(row, 0).toString();
+        System.out.print(name);
+        
+        SelectedEvent = name;
+        
+        this.dispose();
+        ViewEventDetails ED;
+        try {
+            ED = new ViewEventDetails();
+            ED.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(EventsPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }//GEN-LAST:event_viewdetailsbtnActionPerformed
 
     /**
@@ -185,7 +247,11 @@ public class EventsPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EventsPage().setVisible(true);
+                try {
+                    new EventsPage().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(EventsPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -199,7 +265,6 @@ public class EventsPage extends javax.swing.JFrame {
     private javax.swing.JButton busbtn;
     private javax.swing.JButton cartbtn;
     private javax.swing.JButton eventsbtn;
-    private javax.swing.JTextField eventsearchbar;
     private javax.swing.JTable eventstable;
     private javax.swing.JButton homebtn;
     private javax.swing.JScrollPane jScrollPane1;

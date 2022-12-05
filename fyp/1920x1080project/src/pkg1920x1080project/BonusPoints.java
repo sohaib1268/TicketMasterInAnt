@@ -4,6 +4,10 @@
  */
 package pkg1920x1080project;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Sohaib Ali
@@ -131,8 +135,12 @@ public class BonusPoints extends javax.swing.JFrame {
     }//GEN-LAST:event_redeem20ActionPerformed
 
     private void homebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homebtnActionPerformed
-        // TODO add your handling code here:
-        homepage = new HomePage();
+        try {
+            // TODO add your handling code here:
+            homepage = new HomePage();
+        } catch (SQLException ex) {
+            Logger.getLogger(BonusPoints.class.getName()).log(Level.SEVERE, null, ex);
+        }
         homepage.setVisible(true);
         this.setVisible(false);
         

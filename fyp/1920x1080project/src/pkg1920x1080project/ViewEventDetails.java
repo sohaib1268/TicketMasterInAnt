@@ -4,6 +4,15 @@
  */
 package pkg1920x1080project;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static pkg1920x1080project.EventsPage.SelectedEvent;
+
 /**
  *
  * @author Sohaib Ali
@@ -13,8 +22,34 @@ public class ViewEventDetails extends javax.swing.JFrame {
     /**
      * Creates new form ViewEventDetails
      */
-    public ViewEventDetails() {
+    
+    public ViewEventDetails() throws SQLException {
         initComponents();
+        
+        setValues();
+    }
+    
+    public void setValues() throws SQLException
+    {
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`Event` where `scd_db`.`Event`.`Name` = ?";
+        
+        PreparedStatement ps =con.prepareStatement(sql);  
+        
+        String name = SelectedEvent;
+        ps.setString(1, name);
+            
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        
+        
+        eventnamelabel.setText(rs.getString("Name"));
+        locationlabel.setText(rs.getString("Location"));
+        datelabel.setText(rs.getString("Date"));
+        //timelabel.setText();
+        pricelabel.setText(rs.getString("TicketPrice"));
+        
     }
 
     /**
@@ -100,8 +135,12 @@ public class ViewEventDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_bookbtnActionPerformed
 
     private void returnbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnbtnActionPerformed
-        // TODO add your handling code here:
-        eventspage = new EventsPage();
+        try {
+            // TODO add your handling code here:
+            eventspage = new EventsPage();
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
         eventspage.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_returnbtnActionPerformed
@@ -136,7 +175,7 @@ public class ViewEventDetails extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewEventDetails().setVisible(true);
+        //        new ViewEventDetails().setVisible(true);
             }
         });
     }

@@ -4,6 +4,13 @@
  */
 package pkg1920x1080project;
 
+
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static pkg1920x1080project.LogInPage.LoggedInUsername;
+
 /**
  *
  * @author Sohaib Ali
@@ -13,8 +20,37 @@ public class HomePage extends javax.swing.JFrame {
     /**
      * Creates new form HomePage
      */
-    public HomePage() {
+    public HomePage() throws SQLException {
         initComponents();
+        
+        setusername();
+        setcurrentpoints();
+    }
+    
+    public void setusername()
+    {
+        String username = LoggedInUsername;       
+        usernamelabel.setText(username);
+        
+        
+    }
+    
+    public void setcurrentpoints() throws SQLException
+    {
+        String username = LoggedInUsername;  
+        
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select `scd_db`.`Customer`.`CurrentPoints` from `scd_db`.`Customer` where `scd_db`.`Customer`.`Name` = ?";
+        PreparedStatement ps =con.prepareStatement(sql);  
+            
+        ps.setString(1, username);
+            
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        
+        String coins = rs.getString("CurrentPoints");
+        coinslabel.setText(coins);
     }
 
     /**
@@ -105,7 +141,7 @@ public class HomePage extends javax.swing.JFrame {
 
         usernamelabel.setText("jLabel1");
         getContentPane().add(usernamelabel);
-        usernamelabel.setBounds(240, 90, 50, 40);
+        usernamelabel.setBounds(240, 90, 120, 40);
 
         coinslabel.setText("jLabel1");
         getContentPane().add(coinslabel);
@@ -127,8 +163,12 @@ public class HomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_busbtnActionPerformed
 
     private void eventsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventsbtnActionPerformed
-        // TODO add your handling code here:
-        eventspage = new EventsPage();
+        try {
+            // TODO add your handling code here:
+            eventspage = new EventsPage();
+        } catch (SQLException ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         eventspage.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_eventsbtnActionPerformed
@@ -183,7 +223,11 @@ public class HomePage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HomePage().setVisible(true);
+                try {
+                    new HomePage().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

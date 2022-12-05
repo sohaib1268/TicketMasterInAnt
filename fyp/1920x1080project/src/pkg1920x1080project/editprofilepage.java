@@ -4,6 +4,10 @@
  */
 package pkg1920x1080project;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Sohaib Ali
@@ -95,8 +99,12 @@ public class editprofilepage extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void homebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homebtnActionPerformed
-        // TODO add your handling code here:
-        homepage = new HomePage();
+        try {
+            // TODO add your handling code here:
+            homepage = new HomePage();
+        } catch (SQLException ex) {
+            Logger.getLogger(editprofilepage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         homepage.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_homebtnActionPerformed

@@ -4,6 +4,10 @@
  */
 package pkg1920x1080project;
 
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Sohaib Ali
@@ -91,6 +95,11 @@ public class SignUpPage extends javax.swing.JFrame {
         cityfield.setBounds(210, 610, 290, 22);
 
         signupbtn.setText("SIGN UP NOW !");
+        signupbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signupbtnActionPerformed(evt);
+            }
+        });
         getContentPane().add(signupbtn);
         signupbtn.setBounds(860, 470, 140, 40);
 
@@ -104,6 +113,161 @@ public class SignUpPage extends javax.swing.JFrame {
     private void namefieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namefieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_namefieldActionPerformed
+
+    private void adminSignup(String username, String email, String password, String contact) throws SQLException
+    {
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select count(*) from `scd_db`.`Admin`";
+        PreparedStatement ps =con.prepareStatement(sql);  
+        
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        
+        int count = rs.getInt("count(*)");
+        count++;
+        
+        sql = "INSERT INTO `scd_db`.`Admin` VALUES(?, ?, ?, ?, ?);";
+        ps = con.prepareStatement(sql);
+        
+        ps.setInt(1, count);
+        ps.setString(2, username);
+        ps.setString(3, email);
+        ps.setString(4, password);
+        ps.setString(5, contact);
+        
+        ps.executeUpdate();
+        
+        
+        
+    }
+    
+    private void customerSignup(String username, String email, String password, String contact) throws SQLException
+    {
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select count(*) from `scd_db`.`Customer`";
+        PreparedStatement ps =con.prepareStatement(sql);  
+        
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        
+        int count = rs.getInt("count(*)");
+        count++;
+        
+        sql = "INSERT INTO `scd_db`.`Customer` VALUES(?, ?, ?, ?, ?, ?, ?);";
+        ps = con.prepareStatement(sql);
+        
+        ps.setInt(1, count);
+        ps.setString(2, username);
+        ps.setString(3, email);
+        ps.setString(4, password);
+        ps.setString(5, contact);
+        ps.setString(6, "0");
+        ps.setString(7, "0");
+        
+        ps.executeUpdate();
+    }
+    
+    private void signupbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupbtnActionPerformed
+        // TODO add your handling code here:
+        
+        
+        String username = namefield.getText();
+        String email = emailfield.getText();
+        String password = passwordfield.getText();
+        String contact = contactfield.getText();
+        
+        if(username.charAt(0) == '@')
+        {
+            Connection con;
+            try {
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`Admin`.`Name` from `scd_db`.`Admin` ";
+                PreparedStatement ps =con.prepareStatement(sql);
+                
+                ResultSet rs = ps.executeQuery();
+                boolean found = false;
+                
+                while(rs.next())
+                {
+                    if(username.equals(rs.getString("Name")))
+                    {
+                        System.out.println("Admin Already Exists !!!");
+                        found = true;
+                               
+                        break;
+                    }
+                    
+                }
+                
+                if(!found)
+                {
+                                            
+                        System.out.println("Hello New Admin !!!");
+                        try {
+                            adminSignup(username, email, password, contact);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(SignUpPage.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                }
+                
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(SignUpPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            
+
+            
+        }
+        else
+        {         
+            Connection con;
+            try {
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`Customer`.`Name` from `scd_db`.`Customer` ";
+                PreparedStatement ps =con.prepareStatement(sql);
+                
+                ResultSet rs = ps.executeQuery();
+                boolean found = false;
+                
+                while(rs.next())
+                {
+                    if(username.equals(rs.getString("Name")))
+                    {
+                        System.out.println("Customer Already Exists !!!");
+                        found = true;
+                               
+                        break;
+                    }
+                    
+                }
+                
+                if(!found)
+                {
+                                            
+                        System.out.println("Hello New Customer !!!");
+                        try {
+                            customerSignup(username, email, password, contact);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(SignUpPage.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                }
+                
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(SignUpPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            
+
+            
+        }
+       
+    }//GEN-LAST:event_signupbtnActionPerformed
 
     /**
      * @param args the command line arguments
