@@ -4,6 +4,15 @@
  */
 package pkg1920x1080project;
 
+import java.sql.*;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import static pkg1920x1080project.EventsPage.SelectedEvent;
+import static pkg1920x1080project.LogInPage.LoggedInUsername;
+
 /**
  *
  * @author Sohaib Ali
@@ -13,15 +22,97 @@ public class mycartpage extends javax.swing.JFrame {
     /**
      * Creates new form mycartpage
      */
-    public mycartpage() {
+    public mycartpage() throws SQLException {
         initComponents();
         
         populate();
     }
     
-    public void populate()
+    private String getEventID()
     {
-        // Name Quanitity Date 
+             try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`Event`.`EventID` from `scd_db`.`Event` where `scd_db`.`Event`.`Name` = ?";  
+                PreparedStatement ps =con.prepareStatement(sql);
+                
+                String name = SelectedEvent;
+                ps.setString(1, name);
+
+                ResultSet rs = ps.executeQuery();
+                rs.next();
+                
+                String EventID = rs.getString("EventID");
+                
+                return EventID;
+                //con.close();
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return null;
+    }
+    
+    private String getCustomerID()
+    {
+        try {
+                Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`Customer`.`CustomerID` from `scd_db`.`Customer` where `scd_db`.`Customer`.`Name` = ?";  
+                PreparedStatement ps =con2.prepareStatement(sql);
+                
+                String name = LoggedInUsername;
+                ps.setString(1, name);
+
+                ResultSet rs1 = ps.executeQuery();
+                rs1.next();
+                
+                String CustomerID = rs1.getString("CustomerID");
+                System.out.println(CustomerID);
+                
+                return CustomerID;
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return null;
+        }
+    
+    public void populate() throws SQLException
+    {
+        // Name Quanitity Date TicketPrice
+        
+        String CustomerID = getCustomerID(); 
+        
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`EventCart` inner join `scd_db`.`Event` on `scd_db`.`EventCart`.`EventID` = `scd_db`.`Event`.`EventID` where `scd_db`.`EventCart`.`CustomerID` = ?";
+        PreparedStatement ps =con.prepareStatement(sql); 
+        
+        ps.setString(1, CustomerID);
+        
+        ResultSet rs = ps.executeQuery();
+        
+        DefaultTableModel tbModel = (DefaultTableModel)cartitemstable.getModel();
+        for (int i = cartitemstable.getRowCount() - 1; i >= 0; i--) {
+            tbModel.removeRow(i);
+        }
+        
+        while(rs.next())
+        {
+            String name = rs.getString("Name");
+            String quantity = rs.getString("EventQuantity");
+            String date = rs.getString("Date");
+            String ticketPrice = rs.getString("TicketPrice");
+            
+            String tbData[] = {name, quantity, date, ticketPrice};
+            
+            
+            tbModel.addRow(tbData);
+
+        }
+        
+        
+        
+        
     }
 
     /**
@@ -118,7 +209,7 @@ public class mycartpage extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Name", "Tickets Qty", "Date", "Price"
             }
         ));
         jScrollPane1.setViewportView(cartitemstable);
@@ -126,7 +217,7 @@ public class mycartpage extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(130, 340, 950, 350);
 
-        reservebtn.setText("Reserve All");
+        reservebtn.setText("Reserve");
         reservebtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reservebtnActionPerformed(evt);
@@ -153,30 +244,166 @@ public class mycartpage extends javax.swing.JFrame {
 
     private void homebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homebtnActionPerformed
         // TODO add your handling code here:
+        
+        this.dispose();
+        HomePage H;
+        try {
+            H = new HomePage();
+            
+           H.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_homebtnActionPerformed
 
     private void eventsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventsbtnActionPerformed
         // TODO add your handling code here:
+        
+        this.dispose();
+        EventsPage H;
+        try {
+            H = new EventsPage();
+            
+           H.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_eventsbtnActionPerformed
 
     private void busbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busbtnActionPerformed
         // TODO add your handling code here:
+        
+        this.dispose();
+        BusServices H;
+        H = new BusServices();
+        H.setVisible(true);
     }//GEN-LAST:event_busbtnActionPerformed
 
     private void cartbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartbtnActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            
+            this.dispose();
+            mycartpage H;
+            H = new mycartpage();
+            H.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_cartbtnActionPerformed
 
     private void reservedbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservedbtnActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            
+            this.dispose();
+            ReservationsPage H;
+            H = new ReservationsPage();
+            H.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_reservedbtnActionPerformed
 
     private void deleteitembtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteitembtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteitembtnActionPerformed
 
+    public void updateCurrentBookings(int tickets) throws SQLException
+    {
+        Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Update `scd_db`.`Event` set `scd_db`.`Event`.`CurrentBookings` = ? where `scd_db`.`Event`.`Name` = ?";  
+        PreparedStatement ps =con2.prepareStatement(sql);
+        
+        String name = SelectedEvent;
+        ps.setInt(1, tickets);
+        ps.setString(2, name);
+
+        ps.executeUpdate();
+    }
+    
+    
+    
     private void reservebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservebtnActionPerformed
-        // TODO add your handling code here:
+        try {                                           
+            // TODO add your handling code here:
+            int row = cartitemstable.getSelectedRow();
+            
+            String name = cartitemstable.getModel().getValueAt(row, 0).toString();
+            String date = cartitemstable.getModel().getValueAt(row, 2).toString();
+            
+            String tickets = (String) cartitemstable.getModel().getValueAt(row, 1);
+            SelectedEvent = name;
+               
+
+            
+            
+            try {
+                updateCurrentBookings(Integer.parseInt(tickets));
+            } catch (SQLException ex) {
+                Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = "Insert into `scd_db`.`EventReservation` values(?, ?, ?, ?, ?) ";
+            PreparedStatement ps =con2.prepareStatement(sql);
+            
+            String CustomerID = getCustomerID();
+            String EventID = getEventID();
+            
+            String SpecialCode = null;
+            
+            {
+                int leftLimit = 97; // letter 'a'
+                int rightLimit = 122; // letter 'z'
+                int targetStringLength = 10;
+                Random random = new Random();
+                StringBuilder buffer = new StringBuilder(targetStringLength);
+                for (int i = 0; i < targetStringLength; i++) {
+                    int randomLimitedInt = leftLimit + (int) 
+                      (random.nextFloat() * (rightLimit - leftLimit + 1));
+                    buffer.append((char) randomLimitedInt);
+                }
+                SpecialCode = buffer.toString();
+            }
+            
+            System.out.println("Tickets : " + tickets);
+            System.out.println("date : " + date);
+            System.out.println("CustomerID : " + CustomerID);
+            System.out.println("EventID : " + EventID);
+            System.out.println("SpecialCode : " + SpecialCode);
+            
+            ps.setString(1, CustomerID);
+            ps.setString(2, EventID);
+            ps.setString(3, SpecialCode);
+            ps.setString(4, date);
+            ps.setString(5, tickets);
+            
+            ps.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null,"Tickets Reservation Successful !!!"); 
+            
+            ((DefaultTableModel)cartitemstable.getModel()).removeRow(row);
+            
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql1 = "Delete from `scd_db`.`EventCart` where `scd_db`.`EventCart`.`EventID` = ?";
+            PreparedStatement ps1 =con.prepareStatement(sql1);
+            
+            ps1.setString(1, EventID);
+            
+            System.out.println("EventID : "  + EventID);
+            
+            ps1.executeUpdate();
+            
+            
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }//GEN-LAST:event_reservebtnActionPerformed
 
     /**
@@ -209,7 +436,7 @@ public class mycartpage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new mycartpage().setVisible(true);
+                //new mycartpage().setVisible(true);
             }
         });
     }

@@ -181,12 +181,55 @@ public class ViewEventDetails extends javax.swing.JFrame {
                 Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
             }
         return null;
+     }
+    
+    
+    
+    public boolean TicketsAvailability(int tickets) throws SQLException
+    {
+        Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`Event` where `scd_db`.`Event`.`Name` = ?";  
+        PreparedStatement ps =con2.prepareStatement(sql);
+        
+        String name = SelectedEvent;
+        ps.setString(1, name);
+
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+                
+        int MaxCapacity = rs.getInt("MaxCapacity");
+        int CurrentBookings = rs.getInt("CurrentBookings");
+        
+        if(tickets + CurrentBookings <= MaxCapacity)
+        {
+        //    updateCurrentBookings(tickets);
+            return true;
         }
+        else
+        {
+            return false;
+        }
+    }
     
     private void bookbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookbtnActionPerformed
         // TODO add your handling code here:
         
         int tickets = (int) nooftickets.getValue();
+        boolean available;
+        try {
+            available = TicketsAvailability(tickets);
+            
+            if(available == false)
+            {
+                return;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      
+        
         String EventID = setEventID();;
         String CustomerID = setCustomerID();
         

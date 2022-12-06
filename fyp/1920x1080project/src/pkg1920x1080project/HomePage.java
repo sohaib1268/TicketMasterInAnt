@@ -186,14 +186,28 @@ public class HomePage extends javax.swing.JFrame {
 
     private void cartbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartbtnActionPerformed
         // TODO add your handling code here:
+        
+        this.dispose();
+        mycartpage CP;
+        try {
+            CP = new mycartpage();
+            
+            CP.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_cartbtnActionPerformed
 
     private void reservedbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservedbtnActionPerformed
-        // TODO add your handling code here:
-        
-        this.dispose();
-        ReservationsPage RP = new ReservationsPage();
-        RP.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            
+            this.dispose();
+            ReservationsPage RP = new ReservationsPage();
+            RP.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_reservedbtnActionPerformed
 
     private void viewprofilebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewprofilebtnActionPerformed

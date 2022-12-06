@@ -4,9 +4,13 @@
  */
 package pkg1920x1080project;
 
+import java.sql.*;
+
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import static pkg1920x1080project.LogInPage.LoggedInUsername;
 
 /**
  *
@@ -17,8 +21,72 @@ public class ReservationsPage extends javax.swing.JFrame {
     /**
      * Creates new form ReservationsPage
      */
-    public ReservationsPage() {
+    public ReservationsPage() throws SQLException {
         initComponents();
+        
+        populate();
+    }
+    
+    private String getCustomerID()
+    {
+        try {
+                Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`Customer`.`CustomerID` from `scd_db`.`Customer` where `scd_db`.`Customer`.`Name` = ?";  
+                PreparedStatement ps =con2.prepareStatement(sql);
+                
+                String name = LoggedInUsername;
+                ps.setString(1, name);
+
+                ResultSet rs1 = ps.executeQuery();
+                rs1.next();
+                
+                String CustomerID = rs1.getString("CustomerID");
+                System.out.println(CustomerID);
+                
+                return CustomerID;
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return null;
+        }
+    
+    public void populate() throws SQLException
+    {
+        // Name Quanitity Date TicketPrice
+        
+        String CustomerID = getCustomerID(); 
+        
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`EventReservation` inner join `scd_db`.`Event` on `scd_db`.`EventReservation`.`EventID` = `scd_db`.`Event`.`EventID` where `scd_db`.`EventReservation`.`CustomerID` = ?";
+        PreparedStatement ps =con.prepareStatement(sql); 
+        
+        ps.setString(1, CustomerID);
+        
+        ResultSet rs = ps.executeQuery();
+        
+        DefaultTableModel tbModel = (DefaultTableModel)jTable1.getModel();
+        for (int i = jTable1.getRowCount() - 1; i >= 0; i--) {
+            tbModel.removeRow(i);
+        }
+        
+        while(rs.next())
+        {
+            String name = rs.getString("Name");
+            String quantity = rs.getString("EventQuantity");
+            String date = rs.getString("Date");
+            String SpecialCode = rs.getString("SpecialCode");
+            
+            String tbData[] = {name, quantity, date, SpecialCode};
+            
+            
+            tbModel.addRow(tbData);
+
+        }
+        
+        
+        
+        
     }
 
     /**
@@ -53,7 +121,7 @@ public class ReservationsPage extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Name", "Tickets Qty", "Date", "Special Code"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -153,10 +221,14 @@ public class ReservationsPage extends javax.swing.JFrame {
     }//GEN-LAST:event_buservicesbtnActionPerformed
 
     private void cartbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartbtnActionPerformed
-        // TODO add your handling code here:
-        cartpage = new mycartpage();
-        cartpage.setVisible(true);
-        this.setVisible(false);
+        try {
+            // TODO add your handling code here:
+            cartpage = new mycartpage();
+            cartpage.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservationsPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_cartbtnActionPerformed
 
@@ -194,7 +266,7 @@ public class ReservationsPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ReservationsPage().setVisible(true);
+                //new ReservationsPage().setVisible(true);
             }
         });
     }

@@ -11,6 +11,8 @@ import java.sql.*;
  */
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 public class LogInPage extends javax.swing.JFrame {
     
     public static String LoggedInUsername;
@@ -41,7 +43,12 @@ public class LogInPage extends javax.swing.JFrame {
             ps.setString(1, username);
             
             ResultSet rs = ps.executeQuery();
-            rs.next();
+            
+            if(rs.next() == false)
+            {
+                JOptionPane.showMessageDialog(null, "No User Found !!!");
+                return;
+            }
 
             
             if(password.equals(rs.getString("Password")))
@@ -54,6 +61,11 @@ public class LogInPage extends javax.swing.JFrame {
                 HomePage H = new HomePage();
                 H.setVisible(true);
                 
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Incorrect Usernamr or Password !!! !!!");
+                return;
             }
                     
        
@@ -129,7 +141,7 @@ public class LogInPage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(enterusername);
-        enterusername.setBounds(110, 310, 300, 19);
+        enterusername.setBounds(110, 310, 300, 22);
 
         passwordlabel.setText("PASSWORD");
         getContentPane().add(passwordlabel);
@@ -137,7 +149,7 @@ public class LogInPage extends javax.swing.JFrame {
 
         enterpassword.setText("jTextField1");
         getContentPane().add(enterpassword);
-        enterpassword.setBounds(110, 430, 300, 19);
+        enterpassword.setBounds(110, 430, 300, 22);
 
         loginbtn.setText("LOG IN");
         loginbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -146,11 +158,11 @@ public class LogInPage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(loginbtn);
-        loginbtn.setBounds(210, 490, 80, 25);
+        loginbtn.setBounds(210, 490, 80, 23);
 
         jLabel1.setText("----------------NEW USER ?----------------");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(150, 540, 230, 15);
+        jLabel1.setBounds(150, 540, 230, 16);
 
         signupbtn.setText("SIGN UP NOW");
         signupbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -159,7 +171,7 @@ public class LogInPage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(signupbtn);
-        signupbtn.setBounds(180, 590, 150, 25);
+        signupbtn.setBounds(180, 590, 150, 23);
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loginpage1366x768.png"))); // NOI18N
         getContentPane().add(background);
@@ -193,6 +205,11 @@ public class LogInPage extends javax.swing.JFrame {
 
     private void signupbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupbtnActionPerformed
         // TODO add your handling code here:
+        
+        this.dispose();
+        SignUpPage S;
+        S = new SignUpPage();
+        S.setVisible(true);
     }//GEN-LAST:event_signupbtnActionPerformed
 
     /**
