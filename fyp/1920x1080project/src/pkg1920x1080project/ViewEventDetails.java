@@ -81,6 +81,7 @@ public class ViewEventDetails extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1366, 768));
         setMinimumSize(new java.awt.Dimension(1366, 768));
+        setPreferredSize(new java.awt.Dimension(1366, 768));
         getContentPane().setLayout(null);
 
         eventnamelabel.setText("EVENT NAME LABEL");
@@ -216,6 +217,7 @@ public class ViewEventDetails extends javax.swing.JFrame {
     
     private void bookbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookbtnActionPerformed
         // TODO add your handling code here:
+        
         
         int tickets = (int) nooftickets.getValue();
         boolean available;

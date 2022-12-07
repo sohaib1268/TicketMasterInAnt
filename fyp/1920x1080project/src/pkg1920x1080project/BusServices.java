@@ -4,9 +4,15 @@
  */
 package pkg1920x1080project;
 
+
+import java.sql.*;
+
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import static pkg1920x1080project.EventsPage.SelectedEvent;
 
 
 
@@ -15,14 +21,46 @@ import java.util.logging.Logger;
  * @author Sohaib Ali
  */
 public class BusServices extends javax.swing.JFrame {
+    
+    public static String SelectedBusService;
 
     /**
      * Creates new form BusServices
      */
-    public BusServices() {
+    public BusServices() throws SQLException {
         initComponents();
+        
+        populate();
     }
 
+    public void populate() throws SQLException
+    {
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`BusService`";
+        PreparedStatement ps =con.prepareStatement(sql); 
+        ResultSet rs = ps.executeQuery();
+        
+        DefaultTableModel tbModel = (DefaultTableModel)busservicestable.getModel();
+        for (int i = busservicestable.getRowCount() - 1; i >= 0; i--) {
+            tbModel.removeRow(i);
+        }
+        
+        while(rs.next())
+        {
+            String eventname = rs.getString("Name");
+            String DepCity = rs.getString("DepCity");
+            String ArrivalCity = rs.getString("ArrivalCity");
+            String time = rs.getString("Date");
+            
+            String tbData[] = {eventname, DepCity, ArrivalCity, time};
+            
+            
+            tbModel.addRow(tbData);
+
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,7 +70,6 @@ public class BusServices extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        searchbar = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         busservicestable = new javax.swing.JTable();
         homebtn = new javax.swing.JButton();
@@ -46,11 +83,8 @@ public class BusServices extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1366, 768));
         setMinimumSize(new java.awt.Dimension(1366, 768));
+        setPreferredSize(new java.awt.Dimension(1366, 768));
         getContentPane().setLayout(null);
-
-        searchbar.setText("SEARCH");
-        getContentPane().add(searchbar);
-        searchbar.setBounds(140, 210, 350, 22);
 
         busservicestable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -166,7 +200,30 @@ public class BusServices extends javax.swing.JFrame {
     }//GEN-LAST:event_reservedbtnActionPerformed
 
     private void viewdetailsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewdetailsbtnActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            
+            if(busservicestable.getSelectionModel(). isSelectionEmpty() == true)
+            {
+                
+                JOptionPane.showMessageDialog(null, "No Row Selected !!!");
+                return;
+            }
+            
+            int row = busservicestable.getSelectedRow();
+            
+            String name = busservicestable.getModel().getValueAt(row, 0).toString();
+            System.out.print(name);
+            
+            SelectedBusService = name;
+            
+            this.dispose();
+            ViewBusDetails ED;
+            ED = new ViewBusDetails();
+            ED.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(BusServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_viewdetailsbtnActionPerformed
 
     /**
@@ -199,7 +256,8 @@ public class BusServices extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BusServices().setVisible(true);
+                // new BusServices().setVisible(true);
+
             }
         });
     }
@@ -219,7 +277,6 @@ public class BusServices extends javax.swing.JFrame {
     private javax.swing.JButton homebtn;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton reservedbtn;
-    private javax.swing.JTextField searchbar;
     private javax.swing.JButton viewdetailsbtn;
     // End of variables declaration//GEN-END:variables
 }

@@ -50,10 +50,8 @@ public class ReservationsPage extends javax.swing.JFrame {
         return null;
         }
     
-    public void populate() throws SQLException
+    public void populateEvents() throws SQLException
     {
-        // Name Quanitity Date TicketPrice
-        
         String CustomerID = getCustomerID(); 
         
         Connection con;
@@ -83,9 +81,45 @@ public class ReservationsPage extends javax.swing.JFrame {
             tbModel.addRow(tbData);
 
         }
+    }
+    
+    public void populateBusService() throws SQLException
+    {
+        String CustomerID = getCustomerID(); 
         
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`BusServiceReservation` inner join `scd_db`.`BusService` on `scd_db`.`BusServiceReservation`.`BusServiceID` = `scd_db`.`BusService`.`BusServiceID` where `scd_db`.`BusServiceReservation`.`CustomerID` = ?";
+        PreparedStatement ps =con.prepareStatement(sql); 
         
+        ps.setString(1, CustomerID);
         
+        ResultSet rs = ps.executeQuery();
+        
+        DefaultTableModel tbModel = (DefaultTableModel)jTable1.getModel();
+        
+        while(rs.next())
+        {
+            String name = rs.getString("Name");
+            String quantity = rs.getString("BusServiceQuantity");
+            String date = rs.getString("Date");
+            String SpecialCode = rs.getString("SpecialCode");
+            
+            String tbData[] = {name, quantity, date, SpecialCode};
+            
+            
+            tbModel.addRow(tbData);
+
+        }
+    }
+    
+    public void populate() throws SQLException
+    {
+        // Name Quanitity Date TicketPrice
+        
+        populateEvents();
+        populateBusService();
+          
         
     }
 
@@ -213,10 +247,14 @@ public class ReservationsPage extends javax.swing.JFrame {
     }//GEN-LAST:event_eventsbtnActionPerformed
 
     private void buservicesbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buservicesbtnActionPerformed
-        // TODO add your handling code here:
-        busservicespage = new BusServices();
-        busservicespage.setVisible(true);
-        this.setVisible(false);
+        try {
+            // TODO add your handling code here:
+            busservicespage = new BusServices();
+            busservicespage.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservationsPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_buservicesbtnActionPerformed
 

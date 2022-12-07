@@ -134,7 +134,6 @@ public class LogInPage extends javax.swing.JFrame {
         getContentPane().add(usernamelabel);
         usernamelabel.setBounds(110, 260, 80, 30);
 
-        enterusername.setText("jTextField1");
         enterusername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 enterusernameActionPerformed(evt);
@@ -146,8 +145,6 @@ public class LogInPage extends javax.swing.JFrame {
         passwordlabel.setText("PASSWORD");
         getContentPane().add(passwordlabel);
         passwordlabel.setBounds(110, 380, 70, 30);
-
-        enterpassword.setText("jTextField1");
         getContentPane().add(enterpassword);
         enterpassword.setBounds(110, 430, 300, 22);
 

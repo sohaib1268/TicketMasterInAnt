@@ -203,10 +203,14 @@ public class ViewProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_eventsbtnActionPerformed
 
     private void busbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busbtnActionPerformed
-        // TODO add your handling code here:
-        buspage = new BusServices();
-        buspage.setVisible(true);
-        this.setVisible(false);
+        try {
+            // TODO add your handling code here:
+            buspage = new BusServices();
+            buspage.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewProfile.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_busbtnActionPerformed
 

@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static pkg1920x1080project.BusServices.SelectedBusService;
 import static pkg1920x1080project.EventsPage.SelectedEvent;
 import static pkg1920x1080project.LogInPage.LoggedInUsername;
 
@@ -39,11 +40,46 @@ public class mycartpage extends javax.swing.JFrame {
                 ps.setString(1, name);
 
                 ResultSet rs = ps.executeQuery();
-                rs.next();
                 
-                String EventID = rs.getString("EventID");
+                String EventID = null;
+                if(rs.next())
+                {
+                    
+                    EventID = rs.getString("EventID");
+                }
+                
                 
                 return EventID;
+                //con.close();
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return null;
+    }
+    
+    private String getBusServiceID()
+    {
+             try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`BusService`.`BusServiceID` from `scd_db`.`BusService` where `scd_db`.`BusService`.`Name` = ?";  
+                PreparedStatement ps =con.prepareStatement(sql);
+                
+                String name = SelectedBusService;
+                ps.setString(1, name);
+
+                ResultSet rs = ps.executeQuery();
+                
+                String BusServiceID = null;
+                if(rs.next())
+                {
+                    
+                    BusServiceID = rs.getString("BusServiceID");
+                }
+                
+                
+                return BusServiceID;
                 //con.close();
                 
                 
@@ -76,10 +112,8 @@ public class mycartpage extends javax.swing.JFrame {
         return null;
         }
     
-    public void populate() throws SQLException
+    public void populateEventS() throws SQLException
     {
-        // Name Quanitity Date TicketPrice
-        
         String CustomerID = getCustomerID(); 
         
         Connection con;
@@ -109,6 +143,44 @@ public class mycartpage extends javax.swing.JFrame {
             tbModel.addRow(tbData);
 
         }
+    }
+    
+    public void populateBusService() throws SQLException
+    {
+        String CustomerID = getCustomerID(); 
+        
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`BusServiceCart` inner join `scd_db`.`BusService` on `scd_db`.`BusServiceCart`.`BusServiceID` = `scd_db`.`BusService`.`BusServiceID` where `scd_db`.`BusServiceCart`.`CustomerID` = ?";
+        PreparedStatement ps =con.prepareStatement(sql); 
+        
+        ps.setString(1, CustomerID);
+        
+        ResultSet rs = ps.executeQuery();
+        
+        DefaultTableModel tbModel = (DefaultTableModel)cartitemstable.getModel();
+        
+        while(rs.next())
+        {
+            String name = rs.getString("Name");
+            String quantity = rs.getString("BusServiceQuantity");
+            String date = rs.getString("Date");
+            String ticketPrice = rs.getString("TicketPrice");
+            
+            String tbData[] = {name, quantity, date, ticketPrice};
+            
+            
+            tbModel.addRow(tbData);
+
+        }
+    }
+    
+    public void populate() throws SQLException
+    {
+        // Name Quanitity Date TicketPrice
+        
+        populateEventS();
+        populateBusService();
         
         
         
@@ -274,12 +346,16 @@ public class mycartpage extends javax.swing.JFrame {
     }//GEN-LAST:event_eventsbtnActionPerformed
 
     private void busbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busbtnActionPerformed
-        // TODO add your handling code here:
-        
-        this.dispose();
-        BusServices H;
-        H = new BusServices();
-        H.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            
+            this.dispose();
+            BusServices H;
+            H = new BusServices();
+            H.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_busbtnActionPerformed
 
     private void cartbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartbtnActionPerformed
@@ -308,9 +384,13 @@ public class mycartpage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_reservedbtnActionPerformed
 
-    private void deleteitembtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteitembtnActionPerformed
+    
+    private boolean deleteEvent()
+    {
+        
         try {
             // TODO add your handling code here:
+            
             
             int row = cartitemstable.getSelectedRow();
             String name = cartitemstable.getModel().getValueAt(row, 0).toString();
@@ -318,10 +398,61 @@ public class mycartpage extends javax.swing.JFrame {
             SelectedEvent = name;
             
             String EventID = getEventID();
-            deleteRowFromJtableAndDB(EventID);
+            if(EventID != null)
+            {
+                
+                deleteRowFromJtableAndDB(EventID);
+                return true;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return false;
+    }
+    
+    
+    private void deleteBusService()
+    {
+                
+        try {
+            // TODO add your handling code here:
+            
+            
+            int row = cartitemstable.getSelectedRow();
+            String name = cartitemstable.getModel().getValueAt(row, 0).toString();
+            
+            SelectedBusService = name;
+            
+            String BusServiceID = getBusServiceID();
+            
+            if(BusServiceID != null)
+            {
+                
+                deleteBusServiceRowFromJtableAndDB(BusServiceID);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void deleteitembtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteitembtnActionPerformed
+
+        if(cartitemstable.getSelectionModel(). isSelectionEmpty() == true)
+        {
+            
+            JOptionPane.showMessageDialog(null, "No Row Selected !!!");
+            return;
+        }
+        
+        
+        boolean deleted = deleteEvent();
+        
+        if(deleted == true)
+        {
+            return;
+        }
+        deleteBusService();
     }//GEN-LAST:event_deleteitembtnActionPerformed
 
     public void updateCurrentBookings(int tickets) throws SQLException
@@ -338,8 +469,29 @@ public class mycartpage extends javax.swing.JFrame {
     }
     
     
+    private void deleteBusServiceRowFromJtableAndDB(String BusServiceID) throws SQLException
+    {
+               
+        
+        int row = cartitemstable.getSelectedRow();
+        ((DefaultTableModel)cartitemstable.getModel()).removeRow(row);
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql1 = "Delete from `scd_db`.`BusServiceCart` where `scd_db`.`BusServiceCart`.`BusServiceID` = ?";
+            PreparedStatement ps1 =con.prepareStatement(sql1);
+            
+            ps1.setString(1, BusServiceID);
+            
+            System.out.println("BusServiceID : "  + BusServiceID);
+            
+            ps1.executeUpdate();
+    }
+    
+    
     private void deleteRowFromJtableAndDB(String EventID) throws SQLException
     {
+        
+        
         int row = cartitemstable.getSelectedRow();
         ((DefaultTableModel)cartitemstable.getModel()).removeRow(row);
         
@@ -354,7 +506,8 @@ public class mycartpage extends javax.swing.JFrame {
             ps1.executeUpdate();
     }
     
-    private void reservebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservebtnActionPerformed
+    public boolean reserveEvent()
+    {
         try {                                           
             // TODO add your handling code here:
             int row = cartitemstable.getSelectedRow();
@@ -387,7 +540,9 @@ public class mycartpage extends javax.swing.JFrame {
                 
                 
                 String EventID = getEventID();
-                while(rs.next())
+                
+                
+                while(rs.next() && EventID != null)
                 {
                     
                     if(EventID.equals(rs.getString("EventID")))
@@ -408,7 +563,7 @@ public class mycartpage extends javax.swing.JFrame {
                         
                         deleteRowFromJtableAndDB(EventID);
                         
-                        return;
+                        return true;
                     }
                 }
                 
@@ -421,6 +576,11 @@ public class mycartpage extends javax.swing.JFrame {
             
             String CustomerID = getCustomerID();
             String EventID = getEventID();
+            
+            if(EventID == null)
+                {
+                    return false;
+                }
             
             String SpecialCode = null;
             
@@ -458,7 +618,7 @@ public class mycartpage extends javax.swing.JFrame {
             
             deleteRowFromJtableAndDB(EventID);
             
-            
+            return true;
             
             
             
@@ -466,6 +626,152 @@ public class mycartpage extends javax.swing.JFrame {
             Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        return false;
+    }
+    
+    private void updateBusServiceCurrentBookings(int tickets) throws SQLException
+    {
+        Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Update `scd_db`.`BusService` set `scd_db`.`BusService`.`CurrentBookings` = ? where `scd_db`.`BusService`.`Name` = ?";  
+        PreparedStatement ps =con2.prepareStatement(sql);
+        
+        String name = SelectedBusService;
+        ps.setInt(1, tickets);
+        ps.setString(2, name);
+
+        ps.executeUpdate();
+    }
+    
+    private void reserveBusService()
+    {
+        try {                                           
+            // TODO add your handling code here:
+            int row = cartitemstable.getSelectedRow();
+            
+            String name = cartitemstable.getModel().getValueAt(row, 0).toString();
+            String date = cartitemstable.getModel().getValueAt(row, 2).toString();
+            
+            String tickets = (String) cartitemstable.getModel().getValueAt(row, 1);
+            SelectedBusService= name;
+               
+
+            
+            
+            try {
+                updateBusServiceCurrentBookings(Integer.parseInt(tickets));
+            } catch (SQLException ex) {
+                Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            {
+                String CustomerID = getCustomerID();
+                
+                Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select * from  `scd_db`.`BusServiceReservation` where `scd_db`.`BusServiceReservation`.`CustomerID` = ? ";
+                PreparedStatement ps =con2.prepareStatement(sql);
+                
+                ps.setString(1, CustomerID);
+                
+                ResultSet rs = ps.executeQuery();
+                
+                
+                String BusServiceID = getBusServiceID();
+                while(rs.next())
+                {
+                    
+                    if(BusServiceID.equals(rs.getString("BusServiceID")))
+                    {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                        String sql1 = "Update `scd_db`.`BusServiceReservation` set `scd_db`.`BusServiceReservation`.`BusServiceQuantity` = ? where  `scd_db`.`BusServiceReservation`.`BusServiceID` = ?";
+                        PreparedStatement ps1 =con.prepareStatement(sql1);
+                        
+                        int BusServiceQuantity = rs.getInt("BusServiceQuantity");
+                        int UpdatedBusServiceQuantity = BusServiceQuantity + Integer.parseInt(tickets);
+                        ps1.setInt(1, UpdatedBusServiceQuantity);
+                        ps1.setString(2, BusServiceID);
+                        
+                        
+                        ps1.executeUpdate();
+                        
+                        JOptionPane.showMessageDialog(null,"Tickets Reservation Successful !!!"); 
+                        
+                        deleteBusServiceRowFromJtableAndDB(BusServiceID);
+                        
+                        return;
+                    }
+                }
+                
+                
+            }
+            
+            Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = "Insert into `scd_db`.`BusServiceReservation` values(?, ?, ?, ?, ?) ";
+            PreparedStatement ps =con2.prepareStatement(sql);
+            
+            String CustomerID = getCustomerID();
+            String BusServiceID = getBusServiceID();
+            
+            String SpecialCode = null;
+            
+            {
+                int leftLimit = 97; // letter 'a'
+                int rightLimit = 122; // letter 'z'
+                int targetStringLength = 10;
+                Random random = new Random();
+                StringBuilder buffer = new StringBuilder(targetStringLength);
+                for (int i = 0; i < targetStringLength; i++) {
+                    int randomLimitedInt = leftLimit + (int) 
+                      (random.nextFloat() * (rightLimit - leftLimit + 1));
+                    buffer.append((char) randomLimitedInt);
+                }
+                SpecialCode = buffer.toString();
+            }
+            
+            System.out.println("Tickets : " + tickets);
+            System.out.println("date : " + date);
+            System.out.println("CustomerID : " + CustomerID);
+            System.out.println("EventID : " + BusServiceID);
+            System.out.println("SpecialCode : " + SpecialCode);
+            
+            ps.setString(1, CustomerID);
+            ps.setString(2, BusServiceID);
+            ps.setString(3, SpecialCode);
+            ps.setString(4, date);
+            ps.setString(5, tickets);
+            
+            ps.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null,"Tickets Reservation Successful !!!"); 
+              
+            
+            deleteBusServiceRowFromJtableAndDB(BusServiceID);
+            
+            
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void reservebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservebtnActionPerformed
+        
+        
+        if(cartitemstable.getSelectionModel(). isSelectionEmpty() == true)
+        {
+            
+            JOptionPane.showMessageDialog(null, "No Row Selected !!!");
+            return;
+        }
+        
+        boolean reserved = reserveEvent();
+        if(reserved == true)
+        {
+            return;
+        }
+        
+        reserveBusService();
         
     }//GEN-LAST:event_reservebtnActionPerformed
 

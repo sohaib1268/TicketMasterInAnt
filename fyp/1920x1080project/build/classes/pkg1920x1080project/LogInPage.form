@@ -45,9 +45,6 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="enterusername">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="enterusernameActionPerformed"/>
       </Events>
@@ -68,9 +65,6 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="enterpassword">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
-      </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="110" y="430" width="300" height="-1"/>

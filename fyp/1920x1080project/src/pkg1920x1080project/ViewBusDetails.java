@@ -4,6 +4,16 @@
  */
 package pkg1920x1080project;
 
+import java.sql.*;
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import static pkg1920x1080project.BusServices.SelectedBusService;
+import static pkg1920x1080project.EventsPage.SelectedEvent;
+import static pkg1920x1080project.LogInPage.LoggedInUsername;
+
 /**
  *
  * @author Sohaib Ali
@@ -13,8 +23,108 @@ public class ViewBusDetails extends javax.swing.JFrame {
     /**
      * Creates new form ViewBusDetails
      */
-    public ViewBusDetails() {
+    public ViewBusDetails() throws SQLException {
         initComponents();
+        
+        populate();
+    }
+    
+    public void populate() throws SQLException
+    {
+        Connection con;
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`BusService` where `scd_db`.`BusService`.`Name` = ?";
+        
+        PreparedStatement ps =con.prepareStatement(sql);  
+        
+        String name = SelectedBusService;
+        ps.setString(1, name);
+            
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        
+        
+        busnamelabel.setText(rs.getString("Name"));
+        fromcitylabel.setText(rs.getString("DepCity"));
+        tocitylabel.setText(rs.getString("ArrivalCity"));
+        datelabel.setText(rs.getString("Date"));
+        pricelabel.setText(rs.getString("TicketPrice"));
+    }
+    
+    private String getBusServiceID()
+    {
+             try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`BusService`.`BusServiceID` from `scd_db`.`BusService` where `scd_db`.`BusService`.`Name` = ?";  
+                PreparedStatement ps =con.prepareStatement(sql);
+                
+                String name = SelectedBusService;
+                ps.setString(1, name);
+
+                ResultSet rs = ps.executeQuery();
+                rs.next();
+                
+                String BusServiceID = rs.getString("BusServiceID");
+                
+                return BusServiceID;
+                //con.close();
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return null;
+    }
+    
+    private String getCustomerID()
+    {
+        try {
+                Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select `scd_db`.`Customer`.`CustomerID` from `scd_db`.`Customer` where `scd_db`.`Customer`.`Name` = ?";  
+                PreparedStatement ps =con2.prepareStatement(sql);
+                
+                String name = LoggedInUsername;
+                ps.setString(1, name);
+
+                ResultSet rs1 = ps.executeQuery();
+                rs1.next();
+                
+                String CustomerID = rs1.getString("CustomerID");
+                System.out.println(CustomerID);
+                
+                return CustomerID;
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return null;
+     }
+    
+    public boolean TicketsAvailability(int tickets) throws SQLException
+    {
+        Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+        String sql = "Select * from `scd_db`.`BusService` where `scd_db`.`BusService`.`Name` = ?";  
+        PreparedStatement ps =con2.prepareStatement(sql);
+        
+        String name = SelectedBusService;
+        ps.setString(1, name);
+
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+                
+        int MaxCapacity = rs.getInt("MaxCapacity");
+        int CurrentBookings = rs.getInt("CurrentBookings");
+        
+        if(tickets + CurrentBookings <= MaxCapacity)
+        {
+        //    updateCurrentBookings(tickets);
+            return true;
+        }
+        else
+        {
+            
+            JOptionPane.showMessageDialog(null, "You Cannot Book " + tickets + " tickets as only " + (MaxCapacity - CurrentBookings) + " are left");
+            return false;
+        }
     }
 
     /**
@@ -41,6 +151,7 @@ public class ViewBusDetails extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1366, 768));
         setMinimumSize(new java.awt.Dimension(1366, 768));
+        setPreferredSize(new java.awt.Dimension(1366, 768));
         getContentPane().setLayout(null);
 
         busnamelabel.setText("BUS SERVICE NAME LABEL");
@@ -102,13 +213,109 @@ public class ViewBusDetails extends javax.swing.JFrame {
 
     private void bookticketbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookticketbtnActionPerformed
         // TODO add your handling code here:
+        
+        int tickets = (int) nooftickets.getValue();
+        boolean available;
+        try {
+            available = TicketsAvailability(tickets);
+            
+            if(available == false)
+            {
+                return;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        {
+            try {
+                String CustomerID = getCustomerID();
+                
+                Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select * from  `scd_db`.`BusServiceCart` where `scd_db`.`BusServiceCart`.`CustomerID` = ? ";
+                PreparedStatement ps =con2.prepareStatement(sql);
+                
+                ps.setString(1, CustomerID);
+                
+                ResultSet rs = ps.executeQuery();
+                
+                
+                String BusServiceID = getBusServiceID();
+                while(rs.next())
+                {
+                    
+                    if(BusServiceID.equals(rs.getString("BusServiceID")))
+                    {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                        String sql1 = "Update `scd_db`.`BusServiceCart` set `scd_db`.`BusServiceCart`.`BusServiceQuantity` = ? where  `scd_db`.`BusServiceCart`.`BusServiceID` = ?";
+                        PreparedStatement ps1 =con.prepareStatement(sql1);
+                        
+                        int BusServiceQuantity = rs.getInt("BusServiceQuantity");
+                        int UpdatedBusServiceQuantity = BusServiceQuantity + tickets;
+                        ps1.setInt(1, UpdatedBusServiceQuantity);
+                        ps1.setString(2, BusServiceID);
+                        
+                        
+                        ps1.executeUpdate();
+                        
+                        
+                        this.dispose();
+                        mycartpage cp = new mycartpage();
+                        cp.setVisible(true);
+                        
+                        
+                        return;
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+                
+            }
+        
+      
+        
+        String BusServiceID = getBusServiceID();;
+        String CustomerID = getCustomerID();
+        
+        
+        System.out.println("Event ID : " + BusServiceID);
+        System.out.println("CustomerID : " + CustomerID);
+        
+        
+        Connection con;
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");        
+            String sql = "INSERT INTO `scd_db`.`BusServiceCart` VALUES(?, ?, ?);";
+            PreparedStatement ps =con.prepareStatement(sql);  
+            
+            ps.setString(1, CustomerID);
+            ps.setString(2, BusServiceID);
+            ps.setInt(3, tickets );
+            
+            ps.executeUpdate();
+            
+            this.dispose();
+            mycartpage CP = new mycartpage();
+            CP.setVisible(true);
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_bookticketbtnActionPerformed
 
     private void returnbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnbtnActionPerformed
-        // TODO add your handling code here:
-        busservicespage = new BusServices();
-        busservicespage.setVisible(true);
-        this.setVisible(false);
+        try {
+            // TODO add your handling code here:
+            busservicespage = new BusServices();
+            busservicespage.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewBusDetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_returnbtnActionPerformed
 
     /**
@@ -141,7 +348,7 @@ public class ViewBusDetails extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewBusDetails().setVisible(true);
+               // new ViewBusDetails().setVisible(true);
             }
         });
     }

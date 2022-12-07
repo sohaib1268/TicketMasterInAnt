@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static pkg1920x1080project.BusServices.SelectedBusService;
+import static pkg1920x1080project.EventsPage.SelectedEvent;
 import static pkg1920x1080project.LogInPage.LoggedInUsername;
 
 /**
@@ -75,8 +77,9 @@ public class HomePage extends javax.swing.JFrame {
         reservedbtn = new javax.swing.JButton();
         viewprofilebtn = new javax.swing.JButton();
         usernamelabel = new javax.swing.JLabel();
-        coinslabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         backgroundlabel = new javax.swing.JLabel();
+        coinslabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1366, 768));
@@ -149,22 +152,35 @@ public class HomePage extends javax.swing.JFrame {
         getContentPane().add(usernamelabel);
         usernamelabel.setBounds(240, 90, 120, 40);
 
-        coinslabel.setText("jLabel1");
-        getContentPane().add(coinslabel);
-        coinslabel.setBounds(1130, 80, 70, 50);
+        jButton1.setText("LOGOUT");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(1040, 80, 180, 80);
 
         backgroundlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/homepage1366x768.png"))); // NOI18N
         getContentPane().add(backgroundlabel);
         backgroundlabel.setBounds(0, 0, 1370, 770);
 
+        coinslabel.setText("jLabel1");
+        getContentPane().add(coinslabel);
+        coinslabel.setBounds(1130, 80, 70, 50);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void busbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busbtnActionPerformed
-        // TODO add your handling code here:
-        busservicespage = new BusServices();
-        busservicespage.setVisible(true);
-        this.setVisible(false);
+        try {
+            // TODO add your handling code here:
+            busservicespage = new BusServices();
+            busservicespage.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_busbtnActionPerformed
 
@@ -221,6 +237,21 @@ public class HomePage extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_viewprofilebtnActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        
+        LoggedInUsername = null;
+        SelectedEvent = null;
+        SelectedBusService = null;
+        
+        this.dispose();
+        LogInPage LP = new LogInPage();
+        LP.setVisible(true);
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -272,6 +303,7 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JLabel coinslabel;
     private javax.swing.JButton eventsbtn;
     private javax.swing.JButton homebtn;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton reservedbtn;
     private javax.swing.JLabel usernamelabel;
     private javax.swing.JButton viewprofilebtn;

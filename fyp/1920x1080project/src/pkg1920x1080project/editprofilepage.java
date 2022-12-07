@@ -66,12 +66,9 @@ public class editprofilepage extends javax.swing.JFrame {
         contactlabel.setText("Contact");
         getContentPane().add(contactlabel);
         contactlabel.setBounds(70, 400, 100, 40);
-
-        emailfield.setText("jTextField1");
         getContentPane().add(emailfield);
         emailfield.setBounds(200, 260, 240, 22);
 
-        contactfield.setText("jTextField2");
         contactfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contactfieldActionPerformed(evt);
@@ -93,7 +90,6 @@ public class editprofilepage extends javax.swing.JFrame {
         getContentPane().add(passwordlabel1);
         passwordlabel1.setBounds(70, 330, 100, 40);
 
-        passwordfield.setText("jTextField2");
         passwordfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordfieldActionPerformed(evt);

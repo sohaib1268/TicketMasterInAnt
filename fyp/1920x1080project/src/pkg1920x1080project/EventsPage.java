@@ -9,6 +9,7 @@ import java.sql.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,10 +29,10 @@ public class EventsPage extends javax.swing.JFrame {
         initComponents();
         
         
-        getBusServicesFromDB();
+        getEventsFromDB();
     }
     
-    public void getBusServicesFromDB() throws SQLException
+    public void getEventsFromDB() throws SQLException
     {
         Connection con;
         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
@@ -84,6 +85,7 @@ public class EventsPage extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1366, 768));
         setMinimumSize(new java.awt.Dimension(1366, 768));
+        setPreferredSize(new java.awt.Dimension(1366, 768));
         getContentPane().setLayout(null);
 
         eventstable.setModel(new javax.swing.table.DefaultTableModel(
@@ -181,10 +183,14 @@ public class EventsPage extends javax.swing.JFrame {
     }//GEN-LAST:event_eventsbtnActionPerformed
 
     private void busbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busbtnActionPerformed
-        // TODO add your handling code here:
-        busservicespage = new BusServices();
-        busservicespage.setVisible(true);
-        this.setVisible(false);
+        try {
+            // TODO add your handling code here:
+            busservicespage = new BusServices();
+            busservicespage.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(EventsPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_busbtnActionPerformed
 
     private void cartbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartbtnActionPerformed
@@ -197,6 +203,13 @@ public class EventsPage extends javax.swing.JFrame {
 
     private void viewdetailsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewdetailsbtnActionPerformed
         // TODO add your handling code here:
+        
+        if(eventstable.getSelectionModel(). isSelectionEmpty() == true)
+        {
+            
+            JOptionPane.showMessageDialog(null, "No Row Selected !!!");
+            return;
+        }
         
         int row = eventstable.getSelectedRow();
         

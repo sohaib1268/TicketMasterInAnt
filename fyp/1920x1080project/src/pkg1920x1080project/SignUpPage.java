@@ -40,7 +40,7 @@ public class SignUpPage extends javax.swing.JFrame {
         passwordlabel = new javax.swing.JLabel();
         passwordfield = new javax.swing.JTextField();
         signupbtn = new javax.swing.JButton();
-        signupbtn1 = new javax.swing.JButton();
+        loginbtn = new javax.swing.JButton();
         backgroundlabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -53,7 +53,6 @@ public class SignUpPage extends javax.swing.JFrame {
         getContentPane().add(namelabel);
         namelabel.setBounds(130, 370, 50, 40);
 
-        namefield.setText("jTextField1");
         namefield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 namefieldActionPerformed(evt);
@@ -65,24 +64,18 @@ public class SignUpPage extends javax.swing.JFrame {
         emaillabel.setText("EMAIL :");
         getContentPane().add(emaillabel);
         emaillabel.setBounds(130, 430, 60, 40);
-
-        emailfield.setText("jTextField1");
         getContentPane().add(emailfield);
         emailfield.setBounds(210, 440, 290, 22);
 
         contactlabel.setText("CONTACT :");
         getContentPane().add(contactlabel);
         contactlabel.setBounds(130, 480, 70, 40);
-
-        contactfield.setText("jTextField1");
         getContentPane().add(contactfield);
         contactfield.setBounds(210, 490, 290, 22);
 
         passwordlabel.setText("PASSWORD :");
         getContentPane().add(passwordlabel);
         passwordlabel.setBounds(130, 540, 80, 40);
-
-        passwordfield.setText("jTextField1");
         getContentPane().add(passwordfield);
         passwordfield.setBounds(210, 550, 290, 22);
 
@@ -95,14 +88,14 @@ public class SignUpPage extends javax.swing.JFrame {
         getContentPane().add(signupbtn);
         signupbtn.setBounds(860, 530, 140, 40);
 
-        signupbtn1.setText("Login");
-        signupbtn1.addActionListener(new java.awt.event.ActionListener() {
+        loginbtn.setText("Go To Login");
+        loginbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                signupbtn1ActionPerformed(evt);
+                loginbtnActionPerformed(evt);
             }
         });
-        getContentPane().add(signupbtn1);
-        signupbtn1.setBounds(860, 470, 140, 40);
+        getContentPane().add(loginbtn);
+        loginbtn.setBounds(860, 470, 140, 40);
 
         backgroundlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/signup1366x768.png"))); // NOI18N
         getContentPane().add(backgroundlabel);
@@ -275,17 +268,13 @@ public class SignUpPage extends javax.swing.JFrame {
        
     }//GEN-LAST:event_signupbtnActionPerformed
 
-    private void signupbtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupbtn1ActionPerformed
-        try {
-            // TODO add your handling code here:
-            
-            this.dispose();
-            HomePage H = new HomePage();
-            H.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(SignUpPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_signupbtn1ActionPerformed
+    private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
+        // TODO add your handling code here:
+        
+        this.dispose();
+        LogInPage H = new LogInPage();
+        H.setVisible(true);
+    }//GEN-LAST:event_loginbtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -328,11 +317,11 @@ public class SignUpPage extends javax.swing.JFrame {
     private javax.swing.JLabel contactlabel;
     private javax.swing.JTextField emailfield;
     private javax.swing.JLabel emaillabel;
+    private javax.swing.JButton loginbtn;
     private javax.swing.JTextField namefield;
     private javax.swing.JLabel namelabel;
     private javax.swing.JTextField passwordfield;
     private javax.swing.JLabel passwordlabel;
     private javax.swing.JButton signupbtn;
-    private javax.swing.JButton signupbtn1;
     // End of variables declaration//GEN-END:variables
 }
