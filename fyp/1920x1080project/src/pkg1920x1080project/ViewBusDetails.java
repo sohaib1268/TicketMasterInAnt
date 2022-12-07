@@ -185,7 +185,7 @@ public class ViewBusDetails extends javax.swing.JFrame {
             }
         });
         getContentPane().add(bookticketbtn);
-        bookticketbtn.setBounds(570, 340, 100, 23);
+        bookticketbtn.setBounds(570, 340, 100, 25);
 
         returnbtn.setText("RETURN");
         returnbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -194,11 +194,11 @@ public class ViewBusDetails extends javax.swing.JFrame {
             }
         });
         getContentPane().add(returnbtn);
-        returnbtn.setBounds(770, 340, 100, 23);
+        returnbtn.setBounds(770, 340, 100, 25);
 
         nooftickets.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         getContentPane().add(nooftickets);
-        nooftickets.setBounds(680, 290, 64, 22);
+        nooftickets.setBounds(680, 290, 28, 20);
 
         howmanyticketslabel.setText("TICKETS?");
         getContentPane().add(howmanyticketslabel);

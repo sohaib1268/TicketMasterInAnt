@@ -3,16 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/SignUpPage.java</file>
-            <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/HomePage.java</file>
-            <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/ReservationsPage.java</file>
             <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/AdminPanel.java</file>
             <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/Frames/DeleteEventFrame.java</file>
             <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/Frames/AddBusFrame.java</file>
-            <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/LogInPage.java</file>
-            <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/editprofilepage.java</file>
-            <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/mycartpage.java</file>
-            <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/ViewProfile.java</file>
+            <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/BusServices.java</file>
+            <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/pkg1920x1080project/ViewBusDetails.java</file>
             <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/Frames/AddEventFrame.java</file>
             <file>file:/F:/5TH%20SEMESTER/SCD/TicketMasteInAnt/fyp/1920x1080project/src/Frames/DeleteBusFrame.java</file>
         </group>

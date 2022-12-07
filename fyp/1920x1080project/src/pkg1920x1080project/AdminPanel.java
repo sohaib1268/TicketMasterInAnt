@@ -52,15 +52,15 @@ public class AdminPanel extends javax.swing.JFrame {
         desktop.setLayout(desktopLayout);
         desktopLayout.setHorizontalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 410, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         desktopLayout.setVerticalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 350, Short.MAX_VALUE)
+            .addGap(0, 390, Short.MAX_VALUE)
         );
 
         getContentPane().add(desktop);
-        desktop.setBounds(30, 10, 410, 350);
+        desktop.setBounds(0, 0, 500, 390);
 
         admincontrolsmenu.setText("Admin Controls");
 
