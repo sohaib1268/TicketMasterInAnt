@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static pkg1920x1080project.EventsPage.SelectedEvent;
 import static pkg1920x1080project.LogInPage.LoggedInUsername;
 
@@ -207,6 +208,8 @@ public class ViewEventDetails extends javax.swing.JFrame {
         }
         else
         {
+            
+            JOptionPane.showMessageDialog(null, "You Cannot Book " + tickets + " tickets as only " + (MaxCapacity - CurrentBookings) + " are left");
             return false;
         }
     }
@@ -227,6 +230,53 @@ public class ViewEventDetails extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        {
+            try {
+                String CustomerID = setCustomerID();
+                
+                Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select * from  `scd_db`.`EventCart` where `scd_db`.`EventCart`.`CustomerID` = ? ";
+                PreparedStatement ps =con2.prepareStatement(sql);
+                
+                ps.setString(1, CustomerID);
+                
+                ResultSet rs = ps.executeQuery();
+                
+                
+                String EventID = setEventID();
+                while(rs.next())
+                {
+                    
+                    if(EventID.equals(rs.getString("EventID")))
+                    {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                        String sql1 = "Update `scd_db`.`EventCart` set `scd_db`.`EventCart`.`EventQuantity` = ? where  `scd_db`.`EventCart`.`EventID` = ?";
+                        PreparedStatement ps1 =con.prepareStatement(sql1);
+                        
+                        int EventQuantity = rs.getInt("EventQuantity");
+                        int UpdatedEventQuantity = EventQuantity + tickets;
+                        ps1.setInt(1, UpdatedEventQuantity);
+                        ps1.setString(2, EventID);
+                        
+                        
+                        ps1.executeUpdate();
+                        
+                        
+                        this.dispose();
+                        mycartpage cp = new mycartpage();
+                        cp.setVisible(true);
+                        
+                        
+                        return;
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewEventDetails.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+                
+            }
         
       
         

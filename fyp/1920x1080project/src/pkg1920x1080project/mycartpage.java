@@ -129,12 +129,12 @@ public class mycartpage extends javax.swing.JFrame {
         busbtn = new javax.swing.JButton();
         cartbtn = new javax.swing.JButton();
         reservedbtn = new javax.swing.JButton();
-        currentitemslabel = new javax.swing.JLabel();
-        itemamountlabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         cartitemstable = new javax.swing.JTable();
         reservebtn = new javax.swing.JButton();
         deleteitembtn = new javax.swing.JButton();
+        CalculateTotal = new javax.swing.JButton();
+        TotalAmount = new javax.swing.JLabel();
         backgroundlabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -193,14 +193,6 @@ public class mycartpage extends javax.swing.JFrame {
         getContentPane().add(reservedbtn);
         reservedbtn.setBounds(10, 563, 60, 60);
 
-        currentitemslabel.setText("CURRENT ITEMS :");
-        getContentPane().add(currentitemslabel);
-        currentitemslabel.setBounds(110, 270, 100, 40);
-
-        itemamountlabel.setText("ITEM AMOUNT LABEL");
-        getContentPane().add(itemamountlabel);
-        itemamountlabel.setBounds(250, 280, 130, 20);
-
         cartitemstable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -224,7 +216,7 @@ public class mycartpage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(reservebtn);
-        reservebtn.setBounds(900, 160, 120, 40);
+        reservebtn.setBounds(900, 170, 120, 40);
 
         deleteitembtn.setText("Delete item");
         deleteitembtn.addActionListener(new java.awt.event.ActionListener() {
@@ -234,6 +226,17 @@ public class mycartpage extends javax.swing.JFrame {
         });
         getContentPane().add(deleteitembtn);
         deleteitembtn.setBounds(900, 240, 120, 40);
+
+        CalculateTotal.setText("Calculate Total");
+        CalculateTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CalculateTotalActionPerformed(evt);
+            }
+        });
+        getContentPane().add(CalculateTotal);
+        CalculateTotal.setBounds(1170, 390, 120, 40);
+        getContentPane().add(TotalAmount);
+        TotalAmount.setBounds(1177, 460, 110, 50);
 
         backgroundlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MYCART1366X768.png"))); // NOI18N
         getContentPane().add(backgroundlabel);
@@ -306,7 +309,19 @@ public class mycartpage extends javax.swing.JFrame {
     }//GEN-LAST:event_reservedbtnActionPerformed
 
     private void deleteitembtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteitembtnActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            
+            int row = cartitemstable.getSelectedRow();
+            String name = cartitemstable.getModel().getValueAt(row, 0).toString();
+            
+            SelectedEvent = name;
+            
+            String EventID = getEventID();
+            deleteRowFromJtableAndDB(EventID);
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_deleteitembtnActionPerformed
 
     public void updateCurrentBookings(int tickets) throws SQLException
@@ -323,6 +338,21 @@ public class mycartpage extends javax.swing.JFrame {
     }
     
     
+    private void deleteRowFromJtableAndDB(String EventID) throws SQLException
+    {
+        int row = cartitemstable.getSelectedRow();
+        ((DefaultTableModel)cartitemstable.getModel()).removeRow(row);
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql1 = "Delete from `scd_db`.`EventCart` where `scd_db`.`EventCart`.`EventID` = ?";
+            PreparedStatement ps1 =con.prepareStatement(sql1);
+            
+            ps1.setString(1, EventID);
+            
+            System.out.println("EventID : "  + EventID);
+            
+            ps1.executeUpdate();
+    }
     
     private void reservebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservebtnActionPerformed
         try {                                           
@@ -342,6 +372,47 @@ public class mycartpage extends javax.swing.JFrame {
                 updateCurrentBookings(Integer.parseInt(tickets));
             } catch (SQLException ex) {
                 Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            {
+                String CustomerID = getCustomerID();
+                
+                Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                String sql = "Select * from  `scd_db`.`EventReservation` where `scd_db`.`EventReservation`.`CustomerID` = ? ";
+                PreparedStatement ps =con2.prepareStatement(sql);
+                
+                ps.setString(1, CustomerID);
+                
+                ResultSet rs = ps.executeQuery();
+                
+                
+                String EventID = getEventID();
+                while(rs.next())
+                {
+                    
+                    if(EventID.equals(rs.getString("EventID")))
+                    {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+                        String sql1 = "Update `scd_db`.`EventReservation` set `scd_db`.`EventReservation`.`EventQuantity` = ? where  `scd_db`.`EventReservation`.`EventID` = ?";
+                        PreparedStatement ps1 =con.prepareStatement(sql1);
+                        
+                        int EventQuantity = rs.getInt("EventQuantity");
+                        int UpdatedEventQuantity = EventQuantity + Integer.parseInt(tickets);
+                        ps1.setInt(1, UpdatedEventQuantity);
+                        ps1.setString(2, EventID);
+                        
+                        
+                        ps1.executeUpdate();
+                        
+                        JOptionPane.showMessageDialog(null,"Tickets Reservation Successful !!!"); 
+                        
+                        deleteRowFromJtableAndDB(EventID);
+                        
+                        return;
+                    }
+                }
+                
+                
             }
             
             Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
@@ -383,17 +454,9 @@ public class mycartpage extends javax.swing.JFrame {
             
             JOptionPane.showMessageDialog(null,"Tickets Reservation Successful !!!"); 
             
-            ((DefaultTableModel)cartitemstable.getModel()).removeRow(row);
             
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
-            String sql1 = "Delete from `scd_db`.`EventCart` where `scd_db`.`EventCart`.`EventID` = ?";
-            PreparedStatement ps1 =con.prepareStatement(sql1);
             
-            ps1.setString(1, EventID);
-            
-            System.out.println("EventID : "  + EventID);
-            
-            ps1.executeUpdate();
+            deleteRowFromJtableAndDB(EventID);
             
             
             
@@ -405,6 +468,38 @@ public class mycartpage extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_reservebtnActionPerformed
+
+    private void CalculateTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CalculateTotalActionPerformed
+        try {
+            // TODO add your handling code here:
+            
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql1 = "Select * from `scd_db`.`EventCart` inner join `scd_db`.`Event` on `scd_db`.`EventCart`.`EventID` = `scd_db`.`Event`.`EventID` where `scd_db`.`EventCart`.`CustomerID` = ?";
+            PreparedStatement ps1 =con.prepareStatement(sql1);
+            
+            String CustomerID = getCustomerID();
+            ps1.setString(1, CustomerID);
+            
+            ResultSet rs = ps1.executeQuery();
+            Integer sum = 0;
+            
+            while(rs.next())
+            {
+                int ticketPrice =0;
+                int quantity = 0;
+                
+                ticketPrice = rs.getInt("TicketPrice");
+                quantity = rs.getInt("EventQuantity");
+                
+                sum += ticketPrice * quantity;
+            }
+            
+            TotalAmount.setText(sum.toString());
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(mycartpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_CalculateTotalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -442,15 +537,15 @@ public class mycartpage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CalculateTotal;
+    private javax.swing.JLabel TotalAmount;
     private javax.swing.JLabel backgroundlabel;
     private javax.swing.JButton busbtn;
     private javax.swing.JButton cartbtn;
     private javax.swing.JTable cartitemstable;
-    private javax.swing.JLabel currentitemslabel;
     private javax.swing.JButton deleteitembtn;
     private javax.swing.JButton eventsbtn;
     private javax.swing.JButton homebtn;
-    private javax.swing.JLabel itemamountlabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton reservebtn;
     private javax.swing.JButton reservedbtn;

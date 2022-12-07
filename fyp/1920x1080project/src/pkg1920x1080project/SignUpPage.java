@@ -7,6 +7,7 @@ package pkg1920x1080project;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -39,6 +40,7 @@ public class SignUpPage extends javax.swing.JFrame {
         passwordlabel = new javax.swing.JLabel();
         passwordfield = new javax.swing.JTextField();
         signupbtn = new javax.swing.JButton();
+        signupbtn1 = new javax.swing.JButton();
         backgroundlabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,7 +93,16 @@ public class SignUpPage extends javax.swing.JFrame {
             }
         });
         getContentPane().add(signupbtn);
-        signupbtn.setBounds(860, 470, 140, 40);
+        signupbtn.setBounds(860, 530, 140, 40);
+
+        signupbtn1.setText("Login");
+        signupbtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signupbtn1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(signupbtn1);
+        signupbtn1.setBounds(860, 470, 140, 40);
 
         backgroundlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/signup1366x768.png"))); // NOI18N
         getContentPane().add(backgroundlabel);
@@ -126,6 +137,8 @@ public class SignUpPage extends javax.swing.JFrame {
         ps.setString(4, password);
         ps.setString(5, contact);
         
+        JOptionPane.showMessageDialog(null, "You are successfuly registered as an Admin !!!");
+        
         ps.executeUpdate();
         
         
@@ -155,6 +168,9 @@ public class SignUpPage extends javax.swing.JFrame {
         ps.setString(5, contact);
         ps.setString(6, "0");
         ps.setString(7, "0");
+        
+        
+        JOptionPane.showMessageDialog(null, "You are successfuly registered as a Customer !!!");
         
         ps.executeUpdate();
     }
@@ -259,6 +275,18 @@ public class SignUpPage extends javax.swing.JFrame {
        
     }//GEN-LAST:event_signupbtnActionPerformed
 
+    private void signupbtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupbtn1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            
+            this.dispose();
+            HomePage H = new HomePage();
+            H.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(SignUpPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_signupbtn1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -305,5 +333,6 @@ public class SignUpPage extends javax.swing.JFrame {
     private javax.swing.JTextField passwordfield;
     private javax.swing.JLabel passwordlabel;
     private javax.swing.JButton signupbtn;
+    private javax.swing.JButton signupbtn1;
     // End of variables declaration//GEN-END:variables
 }
