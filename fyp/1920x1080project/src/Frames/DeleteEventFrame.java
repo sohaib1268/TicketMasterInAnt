@@ -4,6 +4,10 @@
  */
 package Frames;
 
+
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Sohaib Ali
@@ -37,6 +41,11 @@ public class DeleteEventFrame extends javax.swing.JInternalFrame {
         jLabel1.setText("Name");
 
         deletebtn.setText("DELETE EVENT");
+        deletebtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletebtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -76,6 +85,35 @@ public class DeleteEventFrame extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void deleteEvent(String EventName)
+    {
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = "Delete from `scd_db`.`Event` where `scd_db`.`Event`.`Name`= ?";
+            PreparedStatement ps =con.prepareStatement(sql);
+            
+            String name = EventName;
+            ps.setString(1, name);
+            
+            ps.executeUpdate();
+            
+            //con.close();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DeleteEventFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void deletebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebtnActionPerformed
+        // TODO add your handling code here:
+        String EventName = deletebtn.getText();
+        
+        deleteEvent(EventName);
+        
+        
+    }//GEN-LAST:event_deletebtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

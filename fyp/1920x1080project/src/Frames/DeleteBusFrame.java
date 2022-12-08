@@ -4,6 +4,11 @@
  */
 package Frames;
 
+
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Sohaib Ali
@@ -45,6 +50,11 @@ public class DeleteBusFrame extends javax.swing.JInternalFrame {
         });
 
         deletebus.setText("DELETEBUS");
+        deletebus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletebusActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,6 +101,34 @@ public class DeleteBusFrame extends javax.swing.JInternalFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void deleteBusService(String BusServiceName)
+    {
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = "Delete from `scd_db`.`BusService` where `scd_db`.`BusService`.`Name`= ?";
+            PreparedStatement ps =con.prepareStatement(sql);
+            
+            String name = BusServiceName;
+            ps.setString(1, name);
+            
+            ps.executeUpdate();
+            
+            //con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DeleteBusFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+           
+    }
+    
+    private void deletebusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebusActionPerformed
+        // TODO add your handling code here:
+        
+        String BusServiceName = deletebus.getText();
+        
+        deleteBusService(BusServiceName);
+    }//GEN-LAST:event_deletebusActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

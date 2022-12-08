@@ -4,6 +4,12 @@
  */
 package Frames;
 
+
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Sohaib Ali
@@ -50,6 +56,12 @@ public class AddBusFrame extends javax.swing.JInternalFrame {
         jPanel2.setMinimumSize(new java.awt.Dimension(410, 350));
         jPanel2.setPreferredSize(new java.awt.Dimension(410, 350));
 
+        namefield.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                namefieldActionPerformed(evt);
+            }
+        });
+
         capacityfield.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         jLabel1.setText("Name");
@@ -65,6 +77,11 @@ public class AddBusFrame extends javax.swing.JInternalFrame {
         jLabel6.setText("From");
 
         addbtn.setText("ADD");
+        addbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addbtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -148,6 +165,129 @@ public class AddBusFrame extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void namefieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namefieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_namefieldActionPerformed
+
+    private int getUniqueBusServiceID()
+    {
+        int BusServiceID = 0;
+        try {
+            
+            
+            Connection con;
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = " Select count(*) from `scd_db`.`BusService` ";  
+            PreparedStatement ps =con.prepareStatement(sql);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next())
+            {
+               BusServiceID = rs.getInt("count(*)"); 
+               BusServiceID++;
+              
+            }
+            
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AddEventFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return BusServiceID;
+    }
+    
+    private boolean checkBusServiceExists(String BusServiceName)
+    {
+        try {
+            Connection con;
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = "Select `scd_db`.`Bus Service`.`Name` from `scd_db`.`BusService` ";
+            PreparedStatement ps =con.prepareStatement(sql);
+            
+            ResultSet rs = ps.executeQuery();
+            boolean found = false;
+            
+            while(rs.next())
+            {
+                if(BusServiceName.equals(rs.getString("Name")))
+                {
+                    
+                    JOptionPane.showMessageDialog(null, "Bus Service Already Exists !!!");
+                    found = true;
+                    
+                    break;
+                }
+                
+            }
+            
+            if(found)
+            {
+                return true;
+            }
+            else
+            {
+                return false; 
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AddEventFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+             
+        return false;   
+            
+    }
+    
+    private void addbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addbtnActionPerformed
+        try {        
+            // TODO add your handling code here:
+            
+            // TODO add your handling code here:
+            
+            String BusServiceName = namefield.getText();
+            int MaxCapacity = (int) capacityfield.getValue();
+            String Date = datefield.getText();
+            String TicketPrice = pricefield.getText();
+            String ArrivalCity = tofield.getText();
+            String DepCity = fromfield.getText();
+            
+            boolean found = checkBusServiceExists(BusServiceName);
+            
+            if(found)
+            {
+                return;
+            }
+            
+            Connection con;
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = "INSERT INTO `scd_db`.`BusService` VALUES(?, ?, ?, ?, ?, ?, ?, ?);";  
+            PreparedStatement ps =con.prepareStatement(sql);
+            
+            int BusServiceNameID = getUniqueBusServiceID();
+            
+            ps.setInt(1, BusServiceNameID);
+            ps.setString(2, BusServiceName);
+            ps.setInt(3, MaxCapacity);
+            ps.setInt(4, 0);
+            ps.setString(5, Date);
+            ps.setString(6, TicketPrice);
+            ps.setString(7, DepCity);
+            ps.setString(8, ArrivalCity);
+            
+            
+            
+            JOptionPane.showMessageDialog(null, "New Bus Service Added Successfuly !!!");
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AddBusFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+           
+        
+    }//GEN-LAST:event_addbtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

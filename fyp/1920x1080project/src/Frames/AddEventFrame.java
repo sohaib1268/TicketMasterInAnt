@@ -4,6 +4,12 @@
  */
 package Frames;
 
+
+
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Sohaib Ali
@@ -36,6 +42,8 @@ public class AddEventFrame extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         capacityfield = new javax.swing.JSpinner();
         addbtn = new javax.swing.JButton();
+        locationfield = new javax.swing.JTextField();
+        locationlabel = new javax.swing.JLabel();
 
         setClosable(true);
         setTitle("Add Event");
@@ -54,6 +62,13 @@ public class AddEventFrame extends javax.swing.JInternalFrame {
         capacityfield.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         addbtn.setText("ADD");
+        addbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addbtnActionPerformed(evt);
+            }
+        });
+
+        locationlabel.setText("Location");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -65,7 +80,8 @@ public class AddEventFrame extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(locationlabel))
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -73,7 +89,8 @@ public class AddEventFrame extends javax.swing.JInternalFrame {
                             .addComponent(namefield)
                             .addComponent(capacityfield, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                             .addComponent(datefield)
-                            .addComponent(pricefield))
+                            .addComponent(pricefield)
+                            .addComponent(locationfield))
                         .addGap(162, 162, 162))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -101,7 +118,11 @@ public class AddEventFrame extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pricefield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(locationfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(locationlabel))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -118,6 +139,121 @@ public class AddEventFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private int getUniqueEventID()
+    {
+        int EventID = 0;
+        try {
+            
+            
+            Connection con;
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = " Select count(*) from `scd_db`.`Event` ";  
+            PreparedStatement ps =con.prepareStatement(sql);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next())
+            {
+               EventID = rs.getInt("count(*)"); 
+               EventID++;
+              
+            }
+            
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AddEventFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return EventID;
+    }
+    
+    private boolean checkEventExists(String EventName)
+    {
+        try {
+            Connection con;
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = "Select `scd_db`.`Event`.`Name` from `scd_db`.`Event` ";
+            PreparedStatement ps =con.prepareStatement(sql);
+            
+            ResultSet rs = ps.executeQuery();
+            boolean found = false;
+            
+            while(rs.next())
+            {
+                if(EventName.equals(rs.getString("Name")))
+                {
+                    
+                    JOptionPane.showMessageDialog(null, "Event Already Exists !!!");
+                    found = true;
+                    
+                    break;
+                }
+                
+            }
+            
+            if(found)
+            {
+                return true;
+            }
+            else
+            {
+                return false; 
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AddEventFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+             
+        return false;   
+            
+    }
+    
+    private void addbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addbtnActionPerformed
+        try {
+            // TODO add your handling code here:
+            
+            String EventName = namefield.getText();
+            int MaxCapacity = (int) capacityfield.getValue();
+            String Date = datefield.getText();
+            String TicketPrice = pricefield.getText();
+            String Location = locationfield.getText();
+            
+            boolean found = checkEventExists(EventName);
+            
+            if(found)
+            {
+                return;
+            }
+            
+            Connection con;
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
+            String sql = "INSERT INTO `scd_db`.`Event` VALUES(?, ?, ?, ?, ?, ?, ?);";  
+            PreparedStatement ps =con.prepareStatement(sql);
+            
+            int EventID = getUniqueEventID();
+            
+            ps.setInt(1, EventID);
+            ps.setString(2, EventName);
+            ps.setInt(3, MaxCapacity);
+            ps.setInt(4, 0);
+            ps.setString(5, Date);
+            ps.setString(6, TicketPrice);
+            ps.setString(7, Location);
+
+
+            
+            JOptionPane.showMessageDialog(null, "New Event Added Successfuly !!!");
+            ps.executeUpdate();
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AddEventFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_addbtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addbtn;
@@ -128,6 +264,8 @@ public class AddEventFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField locationfield;
+    private javax.swing.JLabel locationlabel;
     private javax.swing.JTextField namefield;
     private javax.swing.JTextField pricefield;
     // End of variables declaration//GEN-END:variables

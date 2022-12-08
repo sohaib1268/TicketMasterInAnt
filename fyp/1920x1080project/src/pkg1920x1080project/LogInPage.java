@@ -46,7 +46,7 @@ public class LogInPage extends javax.swing.JFrame {
             
             if(rs.next() == false)
             {
-                JOptionPane.showMessageDialog(null, "No User Found !!!");
+                JOptionPane.showMessageDialog(null, "User Not Found !!!");
                 return;
             }
 
@@ -89,20 +89,29 @@ public class LogInPage extends javax.swing.JFrame {
             ps.setString(1, username);
             
             ResultSet rs = ps.executeQuery();
-            rs.next();
+            
+            if(rs.next() == false)
+            {
+                JOptionPane.showMessageDialog(null, "Admin Not Found !!!");
+                return;
+            }
+            
+            
+                if(password.equals(rs.getString("Password")))
+                {
+                    System.out.println("Successfullt Logged In !!!");
+                    LoggedInUsername = username;
+
+
+                    this.dispose();
+                    AdminPanel H = new AdminPanel();
+                    H.setVisible(true);
+
+                }
+            
 
             
-            if(password.equals(rs.getString("Password")))
-            {
-                System.out.println("Successfullt Logged In !!!");
-                LoggedInUsername = username;
-                
-                
-                this.dispose();
-                //HomePage H = new HomePage();
-                //H.setVisible(true);
-                
-            }
+            
                     
        
         

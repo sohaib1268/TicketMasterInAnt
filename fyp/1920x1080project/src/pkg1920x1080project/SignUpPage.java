@@ -139,7 +139,7 @@ public class SignUpPage extends javax.swing.JFrame {
     }
     
     private void customerSignup(String username, String email, String password, String contact) throws SQLException
-    {
+    {        
         Connection con;
         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scd_db", "root", "123456");
         String sql = "Select count(*) from `scd_db`.`Customer`";
@@ -192,7 +192,8 @@ public class SignUpPage extends javax.swing.JFrame {
                 {
                     if(username.equals(rs.getString("Name")))
                     {
-                        System.out.println("Admin Already Exists !!!");
+                        
+                        JOptionPane.showMessageDialog(null, "Admin Already Exists !!!");
                         found = true;
                                
                         break;
@@ -235,8 +236,8 @@ public class SignUpPage extends javax.swing.JFrame {
                 while(rs.next())
                 {
                     if(username.equals(rs.getString("Name")))
-                    {
-                        System.out.println("Customer Already Exists !!!");
+                    {                        
+                        JOptionPane.showMessageDialog(null, "Customer Already Exists !!!");
                         found = true;
                                
                         break;

@@ -4,6 +4,8 @@
  */
 package pkg1920x1080project;
 
+import static pkg1920x1080project.LogInPage.LoggedInUsername;
+
 import Frames.AddBusFrame;
 import Frames.AddEventFrame;
 import Frames.DeleteBusFrame;
@@ -113,7 +115,11 @@ public class AdminPanel extends javax.swing.JFrame {
 
     private void logoutitemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutitemActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
+        LoggedInUsername = null;
+        
+        this.dispose();
+        LogInPage LP = new LogInPage();
+        LP.setVisible(true);
     }//GEN-LAST:event_logoutitemActionPerformed
 
     private void addeventitemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addeventitemActionPerformed

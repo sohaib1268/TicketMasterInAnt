@@ -142,6 +142,9 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="namefield">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="namefieldActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JSpinner" name="capacityfield">
           <Properties>
@@ -192,6 +195,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="ADD"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addbtnActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
